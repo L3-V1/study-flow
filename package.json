@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "validate": "tsx scripts/validate-content.ts"
+    "validate": "tsx scripts/validate-content.ts",
+    "id": "tsx scripts/gerar-ids.ts"
   },
   "dependencies": {
     "react": "^19.3.1",

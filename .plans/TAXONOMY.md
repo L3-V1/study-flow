@@ -27,3 +27,5 @@ features, fixes, refactors, spikes, docs, chores
         - [Fase 0 - Fundação e deploy do Study Flow](roadmaps/roadmap-01/phases/phase-00/phase-00-fundacao-e-deploy.md)
       - **phase-01/**
         - [Fase 1 - Modelo de conteúdo e validação](roadmaps/roadmap-01/phases/phase-01/phase-01-modelo-conteudo-e-validacao.md)
+      - **phase-02/**
+        - [Fase 2 - Slash commands de conteúdo](roadmaps/roadmap-01/phases/phase-02/phase-02-slash-commands-de-conteudo.md)

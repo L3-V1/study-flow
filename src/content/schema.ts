@@ -4,7 +4,7 @@ export const slugSchema = z
   .string()
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'deve ser um slug (ex.: tcp-ip)')
 
-const idNotaSchema = z
+export const idNotaSchema = z
   .string()
   .regex(
     /^[a-z0-9]+(-[a-z0-9]+)*-[a-z0-9]{8}$/,

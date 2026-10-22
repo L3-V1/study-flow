@@ -63,3 +63,11 @@ Critérios de sucesso fortes permitem iterar de forma independente. Critérios f
 ---
 
 **Estas diretrizes estão funcionando se:** houver menos mudanças desnecessárias nos diffs, menos reescritas por excesso de complexidade, e as perguntas de esclarecimento vierem antes da implementação, não depois dos erros.
+
+## Study Flow
+
+- Vocabulário do domínio: `GLOSSARY.md`. Decisões: `docs/adr/0001-conteudo-gerado-fora-do-app.md` e `docs/adr/0002-site-estatico-progresso-local.md`.
+- Formato do conteúdo: `src/content/schema.ts`; `npm run validate` confere todo o `content/`.
+- Gerar Notas: `/flashcards`. Corrigir uma Nota: `/flashcards-fix`.
+
+**Regra de ouro:** nunca altere o ID de uma Nota existente, nunca renumere Lacunas e nunca troque o `tipo` de uma Nota. O progresso de cada Card no IndexedDB está preso a esses IDs.
