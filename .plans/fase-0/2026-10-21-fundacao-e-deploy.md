@@ -9,7 +9,7 @@ fase: 0
 
 ## Contexto
 
-Primeira fase do roteiro (`.plans/2026-10-21-roteiro-desenvolvimento-study-flow.md`). O diretório só tem `GLOSSARY.md`, `docs/adr/`, `.plans/` e `.claude/` (hook e skill de triagem de planos); não é repositório git. O objetivo é ter um esqueleto Vite + React + TS publicado no GitHub Pages desde o primeiro dia, com o pipeline de CI já no formato final (`validate`, `test`, `build`) para que as fases seguintes só preencham o conteúdo.
+Primeira fase do roteiro (`.plans/2026-10-21-roteiro-desenvolvimento-study-flow.md`). O diretório só tem `GLOSSARY.md`, `docs/adr/` e `.plans/`; não é repositório git. O objetivo é ter um esqueleto Vite + React + TS publicado no GitHub Pages desde o primeiro dia, com o pipeline de CI já no formato final (`validate`, `test`, `build`) para que as fases seguintes só preencham o conteúdo.
 
 Ambiente verificado: Node 22.20, npm 10.9, `gh` 2.102 logado como `L3-V1` com escopos `repo` e `workflow`. URL final: `https://l3-v1.github.io/study-flow/`.
 
@@ -48,7 +48,7 @@ Ambiente verificado: Node 22.20, npm 10.9, `gh` 2.102 logado como `L3-V1` com es
 
 ### 7. Git e GitHub
 - `.gitignore`: `node_modules`, `dist`, `coverage`, `*.local`, `.env*`, logs, `.vscode/*` exceto `extensions.json`
-- `git init -b main`, commit inicial com tudo (incluindo `docs/`, `GLOSSARY.md`, `.plans/` e `.claude/`)
+- `git init -b main`, commit inicial com tudo (incluindo `docs/`, `GLOSSARY.md` e `.plans/`)
 - `gh repo create study-flow --public --source . --push`
 - Ativar o Pages com fonte "GitHub Actions": `gh api -X POST repos/L3-V1/study-flow/pages -f build_type=workflow` (antes do push, ou reexecutar o workflow com `gh workflow run deploy.yml` se o primeiro run falhar por falta do Pages)
 
