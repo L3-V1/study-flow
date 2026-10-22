@@ -1,0 +1,7 @@
+dist
+coverage
+
+# Notas e ferramentas do Claude, fora do código do app
+.claude
+.plans
+CLAUDE.md
