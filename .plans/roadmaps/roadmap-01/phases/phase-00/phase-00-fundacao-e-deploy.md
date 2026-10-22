@@ -3,13 +3,17 @@ titulo: Fase 0 - Fundação e deploy do Study Flow
 data: 2026-10-21
 status: aprovado
 fase: 0
+tipo: phase
+numero: "00"
+pai: roadmaps/roadmap-01
+triagem: ok
 ---
 
 # Fase 0: Fundação e deploy do Study Flow
 
 ## Contexto
 
-Primeira fase do roteiro (`.plans/2026-10-21-roteiro-desenvolvimento-study-flow.md`). O diretório só tem `GLOSSARY.md`, `docs/adr/` e `.plans/`; não é repositório git. O objetivo é ter um esqueleto Vite + React + TS publicado no GitHub Pages desde o primeiro dia, com o pipeline de CI já no formato final (`validate`, `test`, `build`) para que as fases seguintes só preencham o conteúdo.
+Primeira fase do roteiro (`.plans/roadmaps/roadmap-01/roadmap-01-desenvolvimento-study-flow.md`). O diretório só tem `GLOSSARY.md`, `docs/adr/` e `.plans/`; não é repositório git. O objetivo é ter um esqueleto Vite + React + TS publicado no GitHub Pages desde o primeiro dia, com o pipeline de CI já no formato final (`validate`, `test`, `build`) para que as fases seguintes só preencham o conteúdo.
 
 Ambiente verificado: Node 22.20, npm 10.9, `gh` 2.102 logado como `L3-V1` com escopos `repo` e `workflow`. URL final: `https://l3-v1.github.io/study-flow/`.
 
