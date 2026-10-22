@@ -13,7 +13,7 @@ triagem: ok
 
 ## Contexto
 
-Segunda fase do roteiro (`.plans/2026-10-21-roteiro-desenvolvimento-study-flow.md`). A Fase 0 deixou o esqueleto publicado e o `scripts/validate-content.ts` como stub. Agora o formato do JSON de Baralho fica definido (Zod), com a lógica de Lacunas, a derivação de Cards, o carregamento no app e a validação real, tudo testado, antes de o slash command da Fase 2 começar a gerar conteúdo.
+Segunda fase do roteiro (`.plans/roadmaps/roadmap-01/roadmap-01-desenvolvimento-study-flow.md`). A Fase 0 deixou o esqueleto publicado e o `scripts/validate-content.ts` como stub. Agora o formato do JSON de Baralho fica definido (Zod), com a lógica de Lacunas, a derivação de Cards, o carregamento no app e a validação real, tudo testado, antes de o slash command da Fase 2 começar a gerar conteúdo.
 
 Ponto de atenção do ambiente: `src/content/load.ts` usa `import.meta.glob`, que só existe no Vite. O script `validate` roda em Node via `tsx`, então ele **não** importa o `load.ts`: lê os arquivos com `fs` e chama uma função pura de validação compartilhada (`src/content/validate.ts`), que também é a usada nos testes.
 
