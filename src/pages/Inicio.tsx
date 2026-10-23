@@ -1,10 +1,12 @@
 import { Link } from 'react-router'
+import { AvisoBackup } from '../components/AvisoBackup.tsx'
 import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
 import { temas } from '../content/load.ts'
 
 export function Inicio() {
   return (
     <main>
+      <AvisoBackup />
       <h1>Study Flow</h1>
       <p>Seu fluxo de estudos, um passo de cada vez.</p>
       {temas.length > 0 && <BotaoEstudar escopo={{}} />}
@@ -30,6 +32,10 @@ export function Inicio() {
           </ul>
         </section>
       ))}
+      <p className="rodape">
+        <Link to="/progresso">Progresso</Link> ·{' '}
+        <Link to="/configuracoes">Configurações</Link>
+      </p>
     </main>
   )
 }

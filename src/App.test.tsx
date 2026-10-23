@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import App from './App.tsx'
 import { derivarCards } from './content/cards.ts'
 import { temas } from './content/load.ts'
@@ -83,6 +83,18 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
+  it('o link Progresso do Início leva à tela', async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Progresso' }))
+    expect(
+      await screen.findByRole('heading', { name: 'Progresso' }),
+    ).toBeInTheDocument()
+  })
+
   it('o botão Estudar do Início mostra os novos com o limite de 20', async () => {
     render(
       <MemoryRouter>
@@ -109,5 +121,31 @@ describe('App', () => {
     await waitFor(() => {
       expect(screen.queryByText('Suspensa')).toBeNull()
     })
+  })
+
+  it('o Início mostra o banner de backup, e Exportar agora o faz sumir', async () => {
+    URL.createObjectURL = vi.fn(() => 'blob:backup')
+    URL.revokeObjectURL = vi.fn()
+    const clique = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(() => {})
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByRole('button', { name: 'Exportar agora' })).toBeNull()
+    await suspenderNota(['qualquer'])
+    expect(
+      await screen.findByText('Você ainda não fez um backup do seu progresso.'),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Exportar agora' }))
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('button', { name: 'Exportar agora' }),
+      ).toBeNull()
+    })
+    expect(clique).toHaveBeenCalledOnce()
+    clique.mockRestore()
   })
 })

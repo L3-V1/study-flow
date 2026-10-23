@@ -33,3 +33,7 @@ features, fixes, refactors, spikes, docs, chores
         - [Fase 3 - Navegação e renderização](roadmaps/roadmap-01/phases/phase-03/phase-03-navegacao-e-renderizacao.md)
       - **phase-04/**
         - [Fase 4 - Motor de estudo (FSRS + IndexedDB)](roadmaps/roadmap-01/phases/phase-04/phase-04-motor-de-estudo-fsrs-indexeddb.md)
+      - **phase-05/**
+        - [Fase 5 - Backup](roadmaps/roadmap-01/phases/phase-05/phase-05-backup.md)
+      - **phase-06/**
+        - [Fase 6 - Tela de progresso](roadmaps/roadmap-01/phases/phase-06/phase-06-tela-de-progresso.md)

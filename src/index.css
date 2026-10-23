@@ -13,6 +13,11 @@
   --dificil: #9a6700;
   --bom: #1a7f37;
   --facil: #0969da;
+  --nivel-0: #ebedf0;
+  --nivel-1: #9be9a8;
+  --nivel-2: #40c463;
+  --nivel-3: #30a14e;
+  --nivel-4: #216e39;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +33,11 @@
     --dificil: #d29922;
     --bom: #3fb950;
     --facil: #4493f8;
+    --nivel-0: #151b23;
+    --nivel-1: #0e4429;
+    --nivel-2: #006d32;
+    --nivel-3: #26a641;
+    --nivel-4: #39d353;
   }
 }
 
@@ -276,4 +286,205 @@ kbd {
   color: var(--link);
   font: inherit;
   cursor: pointer;
+}
+
+/* Backup e Configurações */
+.aviso-backup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  background: var(--destaque);
+}
+
+.aviso-backup p {
+  margin: 0;
+}
+
+.aviso-backup button,
+.configuracoes button,
+.configuracoes input {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  background: var(--fundo);
+  color: var(--texto);
+  font: inherit;
+}
+
+.aviso-backup button,
+.configuracoes button {
+  color: var(--link);
+  border-color: var(--link);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.configuracoes button:disabled {
+  color: var(--texto-suave);
+  border-color: var(--borda);
+  cursor: default;
+}
+
+.configuracoes section {
+  margin-bottom: 2rem;
+}
+
+.configuracoes label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.formulario .linha {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.formulario input {
+  width: 7rem;
+}
+
+.configuracoes input[type='file'] {
+  width: 100%;
+  max-width: 24rem;
+  padding: 0.5rem;
+}
+
+.rodape a {
+  display: inline-block;
+  min-height: 2.75rem;
+  line-height: 2.75rem;
+}
+
+dialog {
+  max-width: min(28rem, calc(100% - 2rem));
+  padding: 1.5rem;
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+dialog h2 {
+  margin-top: 0;
+}
+
+dialog .acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.configuracoes button.perigo {
+  color: var(--errei);
+  border-color: var(--errei);
+}
+
+/* Progresso */
+.sequencia {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tabela-rolagem {
+  overflow-x: auto;
+}
+
+.tabela-rolagem table {
+  display: table;
+  width: 100%;
+}
+
+.tabela-rolagem th,
+.tabela-rolagem td {
+  padding: 0.5rem 0.75rem;
+}
+
+.tabela-rolagem th[scope='col'] {
+  font-size: 0.875rem;
+  vertical-align: bottom;
+}
+
+.tabela-rolagem th[scope='row'] {
+  text-align: left;
+  font-weight: normal;
+}
+
+.tabela-rolagem td,
+.tabela-rolagem th[scope='col']:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabela-rolagem tfoot th[scope='row'],
+.tabela-rolagem tfoot td {
+  font-weight: 700;
+}
+
+/* O heatmap rola dentro do bloco, não a página. */
+.heatmap-rolagem {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.heatmap-grade {
+  display: grid;
+  grid-template-rows: repeat(7, 0.625rem);
+  grid-auto-columns: 0.625rem;
+  grid-auto-flow: column;
+  gap: 2px;
+  width: max-content;
+}
+
+.heatmap-grade span,
+.heatmap-legenda span {
+  border-radius: 2px;
+}
+
+.heatmap-legenda {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+}
+
+.heatmap-legenda span {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.heatmap-legenda span:first-of-type {
+  margin-left: 0.25rem;
+}
+
+.heatmap-legenda span:last-of-type {
+  margin-right: 0.25rem;
+}
+
+.nivel-0 {
+  background: var(--nivel-0);
+}
+.nivel-1 {
+  background: var(--nivel-1);
+}
+.nivel-2 {
+  background: var(--nivel-2);
+}
+.nivel-3 {
+  background: var(--nivel-3);
+}
+.nivel-4 {
+  background: var(--nivel-4);
 }

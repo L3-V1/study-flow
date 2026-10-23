@@ -96,3 +96,7 @@ export async function lerLimiteNovos(): Promise<number> {
   const ajuste = await db.settings.get('limiteNovosPorDia')
   return ajuste?.valor ?? LIMITE_NOVOS_PADRAO
 }
+
+export async function gravarLimiteNovos(n: number): Promise<void> {
+  await db.settings.put({ chave: 'limiteNovosPorDia', valor: n })
+}
