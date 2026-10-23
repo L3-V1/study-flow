@@ -1,7 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import App from './App.tsx'
+import { derivarCards } from './content/cards.ts'
+import { temas } from './content/load.ts'
+import { suspenderNota } from './progress/db.ts'
+import { cardsDoEscopo } from './study/session.ts'
 
 describe('App', () => {
   it('mostra o título Study Flow', () => {
@@ -77,5 +81,33 @@ describe('App', () => {
     expect(
       screen.getByRole('heading', { name: 'Study Flow' }),
     ).toBeInTheDocument()
+  })
+
+  it('o botão Estudar do Início mostra os novos com o limite de 20', async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    )
+    const novos = Math.min(20, cardsDoEscopo(temas, {}).length)
+    const [tudo] = await screen.findAllByRole('link', {
+      name: `Estudar · 0 vencidos · ${novos} novos`,
+    })
+    expect(tudo).toHaveAttribute('href', '/estudar')
+  })
+
+  it('Nota suspensa mostra Reativar no Baralho, e reativar tira a marca', async () => {
+    const baralho = temas[0]!.baralhos[0]!
+    const nota = baralho.notas[0]!
+    await suspenderNota(derivarCards(nota).map((c) => c.id))
+    render(
+      <MemoryRouter initialEntries={[`/tema/${temas[0]!.slug}/${baralho.id}`]}>
+        <App />
+      </MemoryRouter>,
+    )
+    fireEvent.click(await screen.findByRole('button', { name: 'Reativar' }))
+    await waitFor(() => {
+      expect(screen.queryByText('Suspensa')).toBeNull()
+    })
   })
 })

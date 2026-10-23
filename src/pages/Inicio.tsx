@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
 import { temas } from '../content/load.ts'
 
 export function Inicio() {
@@ -6,12 +7,14 @@ export function Inicio() {
     <main>
       <h1>Study Flow</h1>
       <p>Seu fluxo de estudos, um passo de cada vez.</p>
+      {temas.length > 0 && <BotaoEstudar escopo={{}} />}
       {temas.length === 0 && <p>Nenhum Baralho por enquanto.</p>}
       {temas.map((tema) => (
         <section key={tema.slug}>
           <h2>
             <Link to={`/tema/${tema.slug}`}>{tema.nome}</Link>
           </h2>
+          <BotaoEstudar escopo={{ temaSlug: tema.slug }} />
           <ul className="lista">
             {tema.baralhos.map((baralho) => (
               <li key={baralho.id} className="cartao">

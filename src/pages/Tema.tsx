@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router'
+import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
 import { temas } from '../content/load.ts'
 
 export function Tema() {
@@ -21,6 +22,9 @@ export function Tema() {
               {baralho.notas.length}{' '}
               {baralho.notas.length === 1 ? 'Nota' : 'Notas'}
             </span>
+            <BotaoEstudar
+              escopo={{ temaSlug: tema.slug, baralhoId: baralho.id }}
+            />
           </li>
         ))}
       </ul>

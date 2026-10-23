@@ -31,3 +31,5 @@ features, fixes, refactors, spikes, docs, chores
         - [Fase 2 - Slash commands de conteúdo](roadmaps/roadmap-01/phases/phase-02/phase-02-slash-commands-de-conteudo.md)
       - **phase-03/**
         - [Fase 3 - Navegação e renderização](roadmaps/roadmap-01/phases/phase-03/phase-03-navegacao-e-renderizacao.md)
+      - **phase-04/**
+        - [Fase 4 - Motor de estudo (FSRS + IndexedDB)](roadmaps/roadmap-01/phases/phase-04/phase-04-motor-de-estudo-fsrs-indexeddb.md)
