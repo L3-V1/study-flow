@@ -1,7 +1,7 @@
 ---
 titulo: Fase 0 - Fundação e deploy do Study Flow
 data: 2026-10-21
-status: aprovado
+status: implementado
 fase: 0
 tipo: phase
 numero: "00"

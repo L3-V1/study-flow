@@ -1,7 +1,7 @@
 ---
 titulo: Fase 4 - Motor de estudo (FSRS + IndexedDB)
 data: 2026-10-23
-status: aprovado
+status: implementado
 tipo: phase
 numero: "04"
 pai: roadmaps/roadmap-01

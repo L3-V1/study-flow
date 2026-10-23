@@ -1,7 +1,7 @@
 ---
 titulo: Fase 3 - Navegação e renderização
 data: 2026-10-22
-status: aprovado
+status: implementado
 tipo: phase
 numero: "03"
 pai: roadmaps/roadmap-01

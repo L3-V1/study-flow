@@ -1,7 +1,7 @@
 ---
 titulo: Fase 2 - Slash commands de conteúdo
 data: 2026-10-22
-status: concluido
+status: implementado
 fase: 2
 tipo: phase
 numero: "02"

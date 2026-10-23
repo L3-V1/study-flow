@@ -1,7 +1,7 @@
 ---
 titulo: Fase 1 - Modelo de conteúdo e validação
 data: 2026-10-21
-status: aprovado
+status: implementado
 fase: 1
 tipo: phase
 numero: "01"
