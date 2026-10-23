@@ -1,3 +1,4 @@
+import { agruparPorTema } from './indice.ts'
 import { type Baralho, baralhoSchema } from './schema.ts'
 
 // As regras entre arquivos (IDs únicos, Tema = pasta etc.) já são garantidas
@@ -10,3 +11,5 @@ const arquivos = import.meta.glob('/content/**/*.json', {
 export const baralhos: Baralho[] = Object.values(arquivos).map((dados) =>
   baralhoSchema.parse(dados),
 )
+
+export const temas = agruparPorTema(baralhos)

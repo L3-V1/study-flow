@@ -29,3 +29,5 @@ features, fixes, refactors, spikes, docs, chores
         - [Fase 1 - Modelo de conteúdo e validação](roadmaps/roadmap-01/phases/phase-01/phase-01-modelo-conteudo-e-validacao.md)
       - **phase-02/**
         - [Fase 2 - Slash commands de conteúdo](roadmaps/roadmap-01/phases/phase-02/phase-02-slash-commands-de-conteudo.md)
+      - **phase-03/**
+        - [Fase 3 - Navegação e renderização](roadmaps/roadmap-01/phases/phase-03/phase-03-navegacao-e-renderizacao.md)

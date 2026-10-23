@@ -23,6 +23,14 @@ export function renderizarLacuna(
   )
 }
 
+// Modo leitura: todas as Lacunas aparecem reveladas, em negrito.
+export function revelarLacunas(texto: string): string {
+  return texto.replace(
+    LACUNA,
+    (_, _n: string, trecho: string) => `**${trecho}**`,
+  )
+}
+
 export function temLacunaMalformada(texto: string): boolean {
   return texto.replace(LACUNA, '').includes('{{c')
 }

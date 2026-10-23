@@ -15,6 +15,7 @@ describe('derivarCards', () => {
       {
         id: 'tcp-ip-k3j9x2ab',
         notaId: 'tcp-ip-k3j9x2ab',
+        tipo: 'pergunta-resposta',
         frente: 'Frente',
         verso: 'Verso',
         extra: 'Extra',
@@ -32,12 +33,14 @@ describe('derivarCards', () => {
       {
         id: 'tcp-ip-p0q1r2s3::c1',
         notaId: 'tcp-ip-p0q1r2s3',
+        tipo: 'lacuna',
         frente: '**[...]**, b e **[...]**',
         verso: '**a**, b e **c**',
       },
       {
         id: 'tcp-ip-p0q1r2s3::c3',
         notaId: 'tcp-ip-p0q1r2s3',
+        tipo: 'lacuna',
         frente: 'a, **[...]** e c',
         verso: 'a, **b** e c',
       },

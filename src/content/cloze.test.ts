@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   numerosDasLacunas,
   renderizarLacuna,
+  revelarLacunas,
   temLacunaMalformada,
 } from './cloze.ts'
 
@@ -42,6 +43,14 @@ describe('renderizarLacuna', () => {
       '**[...]** e b e **[...]**',
     )
     expect(renderizarLacuna(repetido, 1, true)).toBe('**a** e b e **c**')
+  })
+})
+
+describe('revelarLacunas', () => {
+  it('revela todas as Lacunas em negrito, ignorando a dica', () => {
+    expect(
+      revelarLacunas('O {{c1::TCP}} usa o {{c2::handshake::processo}}.'),
+    ).toBe('O **TCP** usa o **handshake**.')
   })
 })
 

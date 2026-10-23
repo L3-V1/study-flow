@@ -5,6 +5,7 @@ import type { Nota } from './schema.ts'
 export type Card = {
   id: string
   notaId: string
+  tipo: Nota['tipo']
   frente: string
   verso: string
   extra?: string
@@ -17,6 +18,7 @@ export function derivarCards(nota: Nota): Card[] {
       {
         id: nota.id,
         notaId: nota.id,
+        tipo: nota.tipo,
         frente: nota.frente,
         verso: nota.verso,
         ...extra,
@@ -26,6 +28,7 @@ export function derivarCards(nota: Nota): Card[] {
   return numerosDasLacunas(nota.texto).map((n) => ({
     id: `${nota.id}::c${n}`,
     notaId: nota.id,
+    tipo: nota.tipo,
     frente: renderizarLacuna(nota.texto, n, false),
     verso: renderizarLacuna(nota.texto, n, true),
     ...extra,

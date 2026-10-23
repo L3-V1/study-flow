@@ -1,3 +1,28 @@
+@import 'highlight.js/styles/github.css' (prefers-color-scheme: light);
+@import 'highlight.js/styles/github-dark.css' (prefers-color-scheme: dark);
+
+:root {
+  --fundo: #ffffff;
+  --texto: #1f2328;
+  --texto-suave: #59636e;
+  --borda: #d1d9e0;
+  --cartao: #f6f8fa;
+  --link: #0969da;
+  --destaque: #fff8c5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo: #0d1117;
+    --texto: #e6edf3;
+    --texto-suave: #9198a1;
+    --borda: #3d444d;
+    --cartao: #151b23;
+    --link: #4493f8;
+    --destaque: #2e2a12;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -9,10 +34,109 @@ body {
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
   color-scheme: light dark;
+  background: var(--fundo);
+  color: var(--texto);
 }
 
 img,
 svg {
   display: block;
   max-width: 100%;
+}
+
+main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+a {
+  color: var(--link);
+}
+
+/* Alvos de toque confortáveis no celular. */
+.trilha a,
+.lista a,
+h2 a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  min-height: 2.75rem;
+  line-height: 2.25rem;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cartao {
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  background: var(--cartao);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.cartao > p {
+  margin: 0;
+}
+
+.cartao hr {
+  border: none;
+  border-top: 1px solid var(--borda);
+  margin: 1rem 0;
+}
+
+.contagem {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.trilha {
+  color: var(--texto-suave);
+}
+
+.extra {
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--borda);
+  background: var(--destaque);
+  color: var(--texto-suave);
+  font-size: 0.9375rem;
+}
+
+.markdown > :first-child {
+  margin-top: 0;
+}
+
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+
+/* Código e fórmulas longas rolam dentro do cartão, não a página. */
+pre,
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+pre {
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+
+th,
+td {
+  border: 1px solid var(--borda);
+  padding: 0.25rem 0.5rem;
 }
