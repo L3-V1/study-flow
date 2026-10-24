@@ -1,0 +1,159 @@
+{
+  "id": "montagem-de-pc",
+  "tema": { "slug": "computacao", "nome": "Computação" },
+  "nome": "Montagem de PC desktop",
+  "descricao": "Compatibilidade de peças, ordem de montagem, cabos, refrigeração e primeiro boot.",
+  "notas": [
+    {
+      "id": "montagem-de-pc-n1gjom6o",
+      "tipo": "lacuna",
+      "texto": "O processador só encaixa em placas-mãe com o mesmo {{c1::soquete}}, como AM5 na AMD ou LGA 1700 na Intel."
+    },
+    {
+      "id": "montagem-de-pc-6vfo880i",
+      "tipo": "lacuna",
+      "texto": "O {{c1::chipset}} da placa-mãe define recursos como overclock, número de linhas PCIe e portas USB disponíveis."
+    },
+    {
+      "id": "montagem-de-pc-9mfakczg",
+      "tipo": "pergunta-resposta",
+      "frente": "Por que uma placa-mãe pode exigir atualização de BIOS antes de aceitar um processador compatível com o soquete?",
+      "verso": "Porque a placa pode ter saído de fábrica com um BIOS anterior ao lançamento daquele processador e não reconhecê-lo.",
+      "extra": "Muitas placas têm BIOS Flashback, que atualiza o BIOS por um pendrive sem CPU instalada."
+    },
+    {
+      "id": "montagem-de-pc-6csehowu",
+      "tipo": "lacuna",
+      "texto": "Os padrões de memória DDR4 e DDR5 têm o {{c1::chanfro (entalhe)}} em posições diferentes, então um pente não encaixa no slot do outro."
+    },
+    {
+      "id": "montagem-de-pc-q6y0gp7b",
+      "tipo": "pergunta-resposta",
+      "frente": "Com dois pentes de RAM numa placa de quatro slots, onde instalá-los e por quê?",
+      "verso": "Nos slots indicados no manual (geralmente o 2º e o 4º, A2 e B2), para ativar o dual channel.",
+      "extra": "Dois pentes em slots do mesmo canal funcionam, mas em single channel, com menos largura de banda."
+    },
+    {
+      "id": "montagem-de-pc-ugnyhbr5",
+      "tipo": "lacuna",
+      "texto": "Para a memória rodar na velocidade anunciada, é preciso ativar o perfil {{c1::XMP}} (Intel) ou {{c2::EXPO}} (AMD) no BIOS."
+    },
+    {
+      "id": "montagem-de-pc-v6eyojn0",
+      "tipo": "lacuna",
+      "texto": "Os formatos de placa-mãe mais comuns, do maior para o menor, são {{c1::ATX}}, {{c2::Micro-ATX}} e {{c3::Mini-ITX}}."
+    },
+    {
+      "id": "montagem-de-pc-lv6uxp63",
+      "tipo": "pergunta-resposta",
+      "frente": "Quais medidas do gabinete conferir antes de comprar as peças?",
+      "verso": "O formato de placa-mãe suportado, o comprimento máximo da placa de vídeo, a altura máxima do cooler e o espaço para radiadores.",
+      "extra": "Também vale conferir o formato da fonte (ATX ou SFX) e quantas baias de disco existem."
+    },
+    {
+      "id": "montagem-de-pc-qo67v400",
+      "tipo": "pergunta-resposta",
+      "frente": "Como estimar a potência necessária da fonte?",
+      "verso": "Some o consumo (TDP/TBP) da CPU e da GPU, acrescente cerca de 100 W para o resto do sistema e deixe uma folga de 20% a 30%.",
+      "extra": "Placas de vídeo têm picos transitórios acima do consumo nominal; o fabricante costuma indicar a fonte mínima recomendada."
+    },
+    {
+      "id": "montagem-de-pc-dqhknepi",
+      "tipo": "lacuna",
+      "texto": "O selo {{c1::80 PLUS}} de uma fonte indica a sua {{c2::eficiência}} na conversão de energia, não a sua qualidade geral."
+    },
+    {
+      "id": "montagem-de-pc-ofddpksu",
+      "tipo": "lacuna",
+      "texto": "Uma fonte {{c1::modular}} permite conectar só os cabos usados, facilitando a organização dentro do gabinete."
+    },
+    {
+      "id": "montagem-de-pc-kp3wpy56",
+      "tipo": "pergunta-resposta",
+      "frente": "Por que instalar CPU, memória, SSD M.2 e cooler na placa-mãe antes de colocá-la no gabinete?",
+      "verso": "Fora do gabinete há mais espaço e visão, e dá para testar o conjunto na bancada (breadboarding) antes da montagem final.",
+      "extra": "Exceção: coolers cujo backplate exige acesso por trás da placa, ou radiadores de water cooler, podem pedir outra ordem."
+    },
+    {
+      "id": "montagem-de-pc-xmvtezk4",
+      "tipo": "pergunta-resposta",
+      "frente": "Como orientar o processador ao encaixá-lo no soquete?",
+      "verso": "Alinhe o triângulo dourado no canto da CPU com a marca no soquete e apoie a peça sem força; em seguida feche a alavanca.",
+      "extra": "Em soquetes LGA os pinos ficam na placa-mãe e entortam fácil: nunca encoste neles."
+    },
+    {
+      "id": "montagem-de-pc-bemozsw2",
+      "tipo": "lacuna",
+      "texto": "Os {{c1::espaçadores (standoffs)}} mantêm a placa-mãe afastada da chapa do gabinete, evitando curto-circuito."
+    },
+    {
+      "id": "montagem-de-pc-cso1xn9t",
+      "tipo": "pergunta-resposta",
+      "frente": "Qual é a função da pasta térmica e quanto aplicar?",
+      "verso": "Preencher as microfalhas entre o processador e a base do cooler, melhorando a troca de calor. Basta uma porção do tamanho de um grão de ervilha no centro.",
+      "extra": "Muitos coolers vêm com pasta pré-aplicada; nesse caso não se adiciona mais."
+    },
+    {
+      "id": "montagem-de-pc-qykeqxsd",
+      "tipo": "lacuna",
+      "texto": "O cabo do cooler do processador vai no conector {{c1::CPU_FAN}} da placa-mãe; sem ele, muitas placas acusam erro e não dão boot."
+    },
+    {
+      "id": "montagem-de-pc-o4tzsh8t",
+      "tipo": "pergunta-resposta",
+      "frente": "Em que posição montar o radiador de um water cooler para evitar ruído e desgaste da bomba?",
+      "verso": "Com a bomba abaixo do ponto mais alto do radiador, para que o ar acumulado fique no radiador e não na bomba.",
+      "extra": "Radiador no topo do gabinete é a posição mais segura; na frente, prefira as mangueiras embaixo."
+    },
+    {
+      "id": "montagem-de-pc-24l7u0w9",
+      "tipo": "pergunta-resposta",
+      "frente": "Como organizar as ventoinhas do gabinete para um bom fluxo de ar?",
+      "verso": "Entrada de ar pela frente (e por baixo) e saída por trás e pelo topo, acompanhando a subida natural do ar quente.",
+      "extra": "Mais entrada que saída gera pressão positiva, que reduz o acúmulo de poeira pelas frestas sem filtro."
+    },
+    {
+      "id": "montagem-de-pc-rdcfh24a",
+      "tipo": "lacuna",
+      "texto": "A placa-mãe recebe energia por dois cabos da fonte: o {{c1::ATX de 24 pinos}} e o {{c2::EPS de 8 pinos}}, este para o processador."
+    },
+    {
+      "id": "montagem-de-pc-thjkgl4o",
+      "tipo": "pergunta-resposta",
+      "frente": "Por que não alimentar uma placa de vídeo com dois conectores PCIe 8 pinos usando um só cabo com rabicho (daisy chain)?",
+      "verso": "Porque um único cabo passa a carregar toda a corrente, aquecendo mais; com cabos separados a carga se divide.",
+      "extra": "Em placas de baixo consumo o rabicho costuma funcionar, mas cabos separados são o recomendado."
+    },
+    {
+      "id": "montagem-de-pc-sznkolkj",
+      "tipo": "lacuna",
+      "texto": "Os pequenos fios do painel frontal (botão liga, reset, LEDs) vão no conector {{c1::F_PANEL}} da placa-mãe, seguindo o manual."
+    },
+    {
+      "id": "montagem-de-pc-wsxn4j9f",
+      "tipo": "pergunta-resposta",
+      "frente": "Onde ligar o cabo do monitor num PC com placa de vídeo dedicada?",
+      "verso": "Na saída da placa de vídeo, não na da placa-mãe.",
+      "extra": "A saída da placa-mãe só funciona com o vídeo integrado do processador."
+    },
+    {
+      "id": "montagem-de-pc-8v4jxolh",
+      "tipo": "lacuna",
+      "texto": "A placa de vídeo deve ir no slot {{c1::PCIe x16}} mais próximo do processador, que normalmente tem todas as linhas ligadas à CPU."
+    },
+    {
+      "id": "montagem-de-pc-y3mmzsss",
+      "tipo": "pergunta-resposta",
+      "frente": "O PC liga, as ventoinhas giram, mas não aparece imagem. O que verificar primeiro?",
+      "verso": "Os LEDs de diagnóstico (Q-LED) ou bipes da placa-mãe, o encaixe dos pentes de memória, os cabos EPS e da GPU e se o monitor está na placa de vídeo.",
+      "extra": "No primeiro boot com DDR5 o treinamento de memória pode deixar a tela preta por alguns minutos; é normal."
+    },
+    {
+      "id": "montagem-de-pc-mxc1nyz0",
+      "tipo": "pergunta-resposta",
+      "frente": "Como evitar danos por eletricidade estática durante a montagem?",
+      "verso": "Descarregue-se tocando numa superfície metálica aterrada (ou use pulseira antiestática), evite carpete e segure as peças pelas bordas.",
+      "extra": "Monte sobre mesa dura, não sobre o saco antiestático por fora, que pode ser condutivo."
+    }
+  ]
+}
