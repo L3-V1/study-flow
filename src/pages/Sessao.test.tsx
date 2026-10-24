@@ -6,6 +6,8 @@ import { derivarCards } from '../content/cards.ts'
 import { temas } from '../content/load.ts'
 import { db, gravarLimiteNovos } from '../progress/db.ts'
 
+vi.mock('../content/load.ts', () => import('../test/conteudo.ts'))
+
 const baralho = temas
   .find((t) => t.slug === 'computacao')!
   .baralhos.find((b) => b.id === 'complexidade-de-algoritmos')!

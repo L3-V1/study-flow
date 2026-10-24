@@ -7,6 +7,8 @@ import { temas } from './content/load.ts'
 import { suspenderNota } from './progress/db.ts'
 import { cardsDoEscopo } from './study/session.ts'
 
+vi.mock('./content/load.ts', () => import('./test/conteudo.ts'))
+
 describe('App', () => {
   it('mostra o título Study Flow', () => {
     render(

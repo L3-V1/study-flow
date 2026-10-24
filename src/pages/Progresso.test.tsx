@@ -1,12 +1,14 @@
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { Rating } from 'ts-fsrs'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import App from '../App.tsx'
 import { derivarCards } from '../content/cards.ts'
 import { temas } from '../content/load.ts'
 import { avaliar, suspenderNota } from '../progress/db.ts'
 import { cardsDoEscopo } from '../study/session.ts'
+
+vi.mock('../content/load.ts', () => import('../test/conteudo.ts'))
 
 const baralho = temas
   .find((t) => t.slug === 'computacao')!
