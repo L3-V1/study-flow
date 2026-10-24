@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import App from '../App.tsx'
 import { derivarCards } from '../content/cards.ts'
 import { temas } from '../content/load.ts'
-import { db } from '../progress/db.ts'
+import { db, gravarLimiteNovos } from '../progress/db.ts'
 
 const baralho = temas
   .find((t) => t.slug === 'computacao')!
@@ -21,6 +21,15 @@ function abrirSessao() {
   )
 }
 
+// O foco em "Mostrar resposta" vem de um efeito: depois dele, o atalho de
+// teclado já enxerga o Card atual.
+async function esperarCard() {
+  const mostrar = await screen.findByRole('button', {
+    name: /Mostrar resposta/,
+  })
+  await waitFor(() => expect(mostrar).toHaveFocus())
+}
+
 describe('Sessao', () => {
   afterEach(() => {
     vi.restoreAllMocks()
@@ -28,9 +37,7 @@ describe('Sessao', () => {
 
   it('Espaço revela, 3 avalia como Bom e grava o progresso', async () => {
     abrirSessao()
-    expect(
-      await screen.findByRole('button', { name: /Mostrar resposta/ }),
-    ).toBeInTheDocument()
+    await esperarCard()
     expect(screen.queryByRole('button', { name: /Bom/ })).toBeNull()
 
     fireEvent.keyDown(window, { key: ' ' })
@@ -73,5 +80,53 @@ describe('Sessao', () => {
         `/flashcards-fix ${segunda!.id} `,
       )
     })
+  })
+
+  it('sem nada para estudar mostra o estado vazio', async () => {
+    await gravarLimiteNovos(0)
+    abrirSessao()
+    expect(
+      await screen.findByRole('heading', { name: 'Nada para estudar agora' }),
+    ).toHaveFocus()
+    expect(screen.queryByText('Sessão concluída')).toBeNull()
+  })
+
+  it('revelar foca o grupo Avaliação; avaliar devolve o foco', async () => {
+    abrirSessao()
+    await esperarCard()
+
+    fireEvent.keyDown(window, { key: ' ' })
+    expect(screen.getByRole('group', { name: 'Avaliação' })).toHaveFocus()
+
+    fireEvent.keyDown(window, { key: '3' })
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /Mostrar resposta/ }),
+      ).toHaveFocus()
+    })
+  })
+
+  it('com o foco em Erro na Nota, Espaço não revela a resposta', async () => {
+    abrirSessao()
+    await esperarCard()
+    const erro = screen.getByRole('button', { name: 'Erro na Nota' })
+    erro.focus()
+    fireEvent.keyDown(erro, { key: ' ' })
+    expect(screen.queryByRole('group', { name: 'Avaliação' })).toBeNull()
+    expect(
+      screen.getByRole('button', { name: /Mostrar resposta/ }),
+    ).toBeInTheDocument()
+  })
+
+  it('falha ao gravar a Avaliação avisa e mantém o Card', async () => {
+    vi.spyOn(db, 'transaction').mockRejectedValue(new Error('cota'))
+    abrirSessao()
+    await esperarCard()
+    fireEvent.keyDown(window, { key: ' ' })
+    fireEvent.keyDown(window, { key: '3' })
+    expect(
+      await screen.findByText('Não foi possível salvar a Avaliação.'),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Bom/ })).toBeInTheDocument()
   })
 })

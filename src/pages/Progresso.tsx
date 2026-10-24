@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link } from 'react-router'
+import { EstadoVazio } from '../components/EstadoVazio.tsx'
 import { Heatmap } from '../components/Heatmap.tsx'
 import { temas } from '../content/load.ts'
 import { db, lerEstados } from '../progress/db.ts'
@@ -50,11 +51,22 @@ export function Progresso() {
       {progresso !== undefined && (
         <>
           <Resumo porDia={progresso.porDia} agora={progresso.agora} />
-          {temas.length === 0 && <p>Nenhum Baralho por enquanto.</p>}
+          {temas.length === 0 && (
+            <EstadoVazio titulo="Nenhum Baralho por enquanto.">
+              <p>
+                Gere Notas com <code>/flashcards</code>.
+              </p>
+            </EstadoVazio>
+          )}
           {temas.map((tema) => (
             <section key={tema.slug}>
               <h2>{tema.nome}</h2>
-              <div className="tabela-rolagem">
+              <div
+                className="tabela-rolagem"
+                tabIndex={0}
+                role="region"
+                aria-label={`Progresso de ${tema.nome}`}
+              >
                 <table>
                   <thead>
                     <tr>

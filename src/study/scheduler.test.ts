@@ -17,6 +17,8 @@ describe('formatarIntervalo', () => {
     [4 * D, '4 d'],
     [30 * D, '1 mês'],
     [60 * D, '2 meses'],
+    [350 * D, '12 meses'],
+    [365 * D, '1 ano'],
     [438 * D, '1,2 ano'],
     [800 * D, '2,2 anos'],
   ])('%i ms vira "%s"', (ms, texto) => {

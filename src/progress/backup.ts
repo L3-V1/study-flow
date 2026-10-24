@@ -139,5 +139,6 @@ export async function baixarBackup(agora: Date): Promise<void> {
   link.href = url
   link.download = nomeDoArquivo(agora)
   link.click()
-  URL.revokeObjectURL(url)
+  // Revogar na hora pode cancelar o download em alguns navegadores.
+  setTimeout(() => URL.revokeObjectURL(url))
 }

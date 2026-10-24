@@ -27,7 +27,13 @@ export function Heatmap({
       <p>
         {total} {plural(total)} no último ano
       </p>
-      <div className="heatmap-rolagem" ref={rolagem}>
+      <div
+        className="heatmap-rolagem"
+        ref={rolagem}
+        tabIndex={0}
+        role="region"
+        aria-label="Revisões por dia"
+      >
         <div className="heatmap-grade">
           {semanas
             .flat()

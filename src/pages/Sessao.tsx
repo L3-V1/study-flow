@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { type Ref, useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 import { type Grade, Rating, createEmptyCard } from 'ts-fsrs'
 import { CardView } from '../components/CardView.tsx'
+import { EstadoVazio } from '../components/EstadoVazio.tsx'
 import { type Card, derivarCards } from '../content/cards.ts'
 import { baralhos, temas } from '../content/load.ts'
 import { type EstadoCard, avaliar, suspenderNota } from '../progress/db.ts'
@@ -65,6 +66,11 @@ function campoDeTexto(alvo: EventTarget | null): boolean {
   )
 }
 
+// Com Espaço, o navegador já aciona o botão focado (link só com Enter).
+function botao(alvo: EventTarget | null): boolean {
+  return alvo instanceof HTMLButtonElement
+}
+
 function SessaoAtiva({
   escopo,
   titulo,
@@ -76,6 +82,8 @@ function SessaoAtiva({
 }) {
   // A fila é um snapshot montado ao abrir; as Avaliações só mexem nela.
   const [fila, setFila] = useState<Card[]>()
+  // Suspender a última Nota no meio da Sessão ainda termina em "concluída".
+  const [vaziaAoAbrir, setVaziaAoAbrir] = useState(false)
   const [estados, setEstados] = useState(new Map<string, EstadoCard>())
   // O instante da revelação é o `agora` das previsões de intervalo.
   const [reveladoEm, setReveladoEm] = useState<Date>()
@@ -83,6 +91,9 @@ function SessaoAtiva({
   const [revisados, setRevisados] = useState(0)
   const [aviso, setAviso] = useState<string>()
   const ocupado = useRef(false)
+  const mostrar = useRef<HTMLButtonElement>(null)
+  const grupoAvaliacoes = useRef<HTMLDivElement>(null)
+  const tituloFim = useRef<HTMLHeadingElement>(null)
 
   const { temaSlug, baralhoId } = escopo
   useEffect(() => {
@@ -90,6 +101,7 @@ function SessaoAtiva({
     void carregarSessao({ temaSlug, baralhoId }, new Date()).then((s) => {
       if (!ativo) return
       setFila([...s.vencidos, ...s.novos])
+      setVaziaAoAbrir(s.vencidos.length + s.novos.length === 0)
       setEstados(s.estados)
     })
     return () => {
@@ -98,6 +110,17 @@ function SessaoAtiva({
   }, [temaSlug, baralhoId])
 
   const atual = fila?.[0]
+  const carregando = fila === undefined
+  const idAtual = atual?.id
+
+  // O botão focado some ao revelar e ao avaliar; o foco não cai no `body`.
+  useEffect(() => {
+    if (carregando) return
+    if (idAtual === undefined) tituloFim.current?.focus()
+    else if (revelado) grupoAvaliacoes.current?.focus()
+    // Sem rolar: num Card longo, o início da pergunta continua à vista.
+    else mostrar.current?.focus({ preventScroll: true })
+  }, [revelado, idAtual, carregando])
 
   async function avaliarAtual(rating: Grade) {
     if (atual === undefined || ocupado.current) return
@@ -116,6 +139,8 @@ function SessaoAtiva({
       setReveladoEm(undefined)
       setRevisados((n) => n + 1)
       setAviso(undefined)
+    } catch {
+      setAviso('Não foi possível salvar a Avaliação.')
     } finally {
       ocupado.current = false
     }
@@ -129,7 +154,12 @@ function SessaoAtiva({
       const nota = baralhos.flatMap((b) => b.notas).find((n) => n.id === notaId)
       const ids =
         nota === undefined ? [atual.id] : derivarCards(nota).map((c) => c.id)
-      await suspenderNota(ids)
+      try {
+        await suspenderNota(ids)
+      } catch {
+        setAviso('Não foi possível suspender a Nota.')
+        return
+      }
       setFila((f) => (f ?? []).filter((c) => c.notaId !== notaId))
       setReveladoEm(undefined)
       try {
@@ -145,9 +175,10 @@ function SessaoAtiva({
 
   useEffect(() => {
     function aoTeclar(e: KeyboardEvent) {
-      if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return
+      // Tecla segurada não repete a Avaliação.
+      if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return
       if (campoDeTexto(e.target) || atual === undefined) return
-      if (e.key === ' ' && !revelado) {
+      if (e.key === ' ' && !revelado && !botao(e.target)) {
         e.preventDefault()
         setReveladoEm(new Date())
         return
@@ -182,9 +213,17 @@ function SessaoAtiva({
       )}
       {fila === undefined ? (
         <p>Carregando…</p>
+      ) : atual === undefined && vaziaAoAbrir ? (
+        <EstadoVazio titulo="Nada para estudar agora" ref={tituloFim}>
+          <p>
+            <Link to={voltar.para}>Voltar para {voltar.rotulo}</Link>
+          </p>
+        </EstadoVazio>
       ) : atual === undefined ? (
         <section className="fim-sessao">
-          <h2>Sessão concluída</h2>
+          <h2 ref={tituloFim} tabIndex={-1}>
+            Sessão concluída
+          </h2>
           <p>
             {revisados} {revisados === 1 ? 'Card revisado' : 'Cards revisados'}.
           </p>
@@ -196,12 +235,14 @@ function SessaoAtiva({
           <CardView card={atual} revelado={revelado} />
           {reveladoEm !== undefined ? (
             <BotoesAvaliacao
+              ref={grupoAvaliacoes}
               agora={reveladoEm}
               fsrs={estados.get(atual.id)?.fsrs}
               aoAvaliar={(r) => void avaliarAtual(r)}
             />
           ) : (
             <button
+              ref={mostrar}
               type="button"
               className="botao-principal"
               onClick={() => setReveladoEm(new Date())}
@@ -223,17 +264,25 @@ function SessaoAtiva({
 }
 
 function BotoesAvaliacao({
+  ref,
   agora,
   fsrs,
   aoAvaliar,
 }: {
+  ref: Ref<HTMLDivElement>
   agora: Date
   fsrs: EstadoCard['fsrs'] | undefined
   aoAvaliar: (rating: Grade) => void
 }) {
   const dues = previsoes(fsrs ?? createEmptyCard(agora), agora)
   return (
-    <div className="avaliacoes">
+    <div
+      ref={ref}
+      className="avaliacoes"
+      tabIndex={-1}
+      role="group"
+      aria-label="Avaliação"
+    >
       {avaliacoes.map((rating, i) => (
         <button
           key={rating}

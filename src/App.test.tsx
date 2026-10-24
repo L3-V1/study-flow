@@ -148,4 +148,34 @@ describe('App', () => {
     expect(clique).toHaveBeenCalledOnce()
     clique.mockRestore()
   })
+
+  it('Baralho todo suspenso avisa no botão e na tela', async () => {
+    const baralho = temas[0]!.baralhos[0]!
+    for (const nota of baralho.notas) {
+      await suspenderNota(derivarCards(nota).map((c) => c.id))
+    }
+    render(
+      <MemoryRouter initialEntries={[`/tema/${temas[0]!.slug}/${baralho.id}`]}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(
+      await screen.findByText('Todas as Notas suspensas'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', {
+        name: 'Todas as Notas deste Baralho estão suspensas',
+      }),
+    ).toBeInTheDocument()
+  })
+
+  it('a tela de Tema tem o botão Estudar do Tema', async () => {
+    render(
+      <MemoryRouter initialEntries={['/tema/computacao']}>
+        <App />
+      </MemoryRouter>,
+    )
+    const links = await screen.findAllByRole('link', { name: /^Estudar/ })
+    expect(links[0]).toHaveAttribute('href', '/estudar/computacao')
+  })
 })

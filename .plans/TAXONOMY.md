@@ -37,3 +37,5 @@ features, fixes, refactors, spikes, docs, chores
         - [Fase 5 - Backup](roadmaps/roadmap-01/phases/phase-05/phase-05-backup.md)
       - **phase-06/**
         - [Fase 6 - Tela de progresso](roadmaps/roadmap-01/phases/phase-06/phase-06-tela-de-progresso.md)
+      - **phase-07/**
+        - [Fase 7 - Polimento](roadmaps/roadmap-01/phases/phase-07/phase-07-polimento.md)

@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { AvisoBackup } from '../components/AvisoBackup.tsx'
 import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
+import { EstadoVazio } from '../components/EstadoVazio.tsx'
 import { temas } from '../content/load.ts'
 
 export function Inicio() {
@@ -10,7 +11,13 @@ export function Inicio() {
       <h1>Study Flow</h1>
       <p>Seu fluxo de estudos, um passo de cada vez.</p>
       {temas.length > 0 && <BotaoEstudar escopo={{}} />}
-      {temas.length === 0 && <p>Nenhum Baralho por enquanto.</p>}
+      {temas.length === 0 && (
+        <EstadoVazio titulo="Nenhum Baralho por enquanto.">
+          <p>
+            Gere Notas com <code>/flashcards</code>.
+          </p>
+        </EstadoVazio>
+      )}
       {temas.map((tema) => (
         <section key={tema.slug}>
           <h2>

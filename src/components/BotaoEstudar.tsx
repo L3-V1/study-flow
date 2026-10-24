@@ -15,15 +15,15 @@ export function BotaoEstudar({ escopo }: { escopo: Escopo }) {
       </span>
     )
   }
-  const { vencidos, novos } = contagem
-  const texto = `Estudar · ${vencidos} ${vencidos === 1 ? 'vencido' : 'vencidos'} · ${novos} ${novos === 1 ? 'novo' : 'novos'}`
+  const { vencidos, novos, tudoSuspenso } = contagem
   if (vencidos + novos === 0) {
     return (
       <span className="botao-estudar" aria-disabled="true">
-        {texto}
+        {tudoSuspenso ? 'Todas as Notas suspensas' : 'Nada para estudar hoje'}
       </span>
     )
   }
+  const texto = `Estudar · ${vencidos} ${vencidos === 1 ? 'vencido' : 'vencidos'} · ${novos} ${novos === 1 ? 'novo' : 'novos'}`
   return (
     <Link className="botao-estudar" to={rotaDoEscopo(escopo)}>
       {texto}

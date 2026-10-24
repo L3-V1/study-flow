@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Link, Navigate, useParams } from 'react-router'
 import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
+import { EstadoVazio } from '../components/EstadoVazio.tsx'
 import { Markdown } from '../components/Markdown.tsx'
 import { derivarCards } from '../content/cards.ts'
 import { revelarLacunas } from '../content/cloze.ts'
@@ -16,6 +17,15 @@ export function Baralho() {
   if (tema === undefined || baralho === undefined) {
     return <Navigate to="/" replace />
   }
+  const notas = baralho.notas.map((nota) => {
+    const cardIds = derivarCards(nota).map((c) => c.id)
+    const suspensa = cardIds.some((id) => estados?.get(id)?.suspenso)
+    return { nota, cardIds, suspensa }
+  })
+  // Mesmo critério do BotaoEstudar: todos os Cards, não só um por Nota.
+  const tudoSuspenso = notas.every(({ cardIds }) =>
+    cardIds.every((id) => estados?.get(id)?.suspenso),
+  )
 
   return (
     <main>
@@ -26,37 +36,38 @@ export function Baralho() {
       <h1>{baralho.nome}</h1>
       {baralho.descricao !== undefined && <p>{baralho.descricao}</p>}
       <BotaoEstudar escopo={{ temaSlug: tema.slug, baralhoId: baralho.id }} />
+      {tudoSuspenso && (
+        <EstadoVazio titulo="Todas as Notas deste Baralho estão suspensas">
+          <p>Reative as Notas abaixo depois de corrigi-las.</p>
+        </EstadoVazio>
+      )}
       <ul className="lista">
-        {baralho.notas.map((nota) => {
-          const cardIds = derivarCards(nota).map((c) => c.id)
-          const suspensa = cardIds.some((id) => estados?.get(id)?.suspenso)
-          return (
-            <li key={nota.id} className="cartao">
-              {suspensa && (
-                <div className="suspensa">
-                  <span className="marca">Suspensa</span>
-                  <button type="button" onClick={() => reativarNota(cardIds)}>
-                    Reativar
-                  </button>
-                </div>
-              )}
-              {nota.tipo === 'pergunta-resposta' ? (
-                <>
-                  <Markdown texto={nota.frente} />
-                  <hr />
-                  <Markdown texto={nota.verso} />
-                </>
-              ) : (
-                <Markdown texto={revelarLacunas(nota.texto)} />
-              )}
-              {nota.extra !== undefined && (
-                <aside className="extra">
-                  <Markdown texto={nota.extra} />
-                </aside>
-              )}
-            </li>
-          )
-        })}
+        {notas.map(({ nota, cardIds, suspensa }) => (
+          <li key={nota.id} className="cartao">
+            {suspensa && (
+              <div className="suspensa">
+                <span className="marca">Suspensa</span>
+                <button type="button" onClick={() => reativarNota(cardIds)}>
+                  Reativar
+                </button>
+              </div>
+            )}
+            {nota.tipo === 'pergunta-resposta' ? (
+              <>
+                <Markdown texto={nota.frente} />
+                <hr />
+                <Markdown texto={nota.verso} />
+              </>
+            ) : (
+              <Markdown texto={revelarLacunas(nota.texto)} />
+            )}
+            {nota.extra !== undefined && (
+              <aside className="extra">
+                <Markdown texto={nota.extra} />
+              </aside>
+            )}
+          </li>
+        ))}
       </ul>
     </main>
   )

@@ -1,7 +1,7 @@
 import { type Card as CardFsrs, type Grade, Rating, fsrs } from 'ts-fsrs'
 
-// Parâmetros padrão: retenção 0,9, fuzz e passos curtos ligados.
-const f = fsrs()
+// Retenção 0,9 e passos curtos são o padrão; o fuzz vem desligado no ts-fsrs.
+const f = fsrs({ enable_fuzz: true })
 
 export const avaliacoes: Grade[] = [
   Rating.Again,
@@ -33,7 +33,7 @@ export function formatarIntervalo(de: Date, ate: Date): string {
   const dias = Math.round(horas / 24)
   if (dias < 30) return `${dias} d`
   const meses = Math.round(dias / 30)
-  if (meses < 12) return meses === 1 ? '1 mês' : `${meses} meses`
+  if (dias < 365) return meses === 1 ? '1 mês' : `${meses} meses`
   const anos = Math.round((dias / 365) * 10) / 10
   return `${anos.toLocaleString('pt-BR')} ${anos < 2 ? 'ano' : 'anos'}`
 }

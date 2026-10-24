@@ -13,6 +13,7 @@ export function Tema() {
         <Link to="/">Início</Link>
       </nav>
       <h1>{tema.nome}</h1>
+      <BotaoEstudar escopo={{ temaSlug: tema.slug }} />
       <ul className="lista">
         {tema.baralhos.map((baralho) => (
           <li key={baralho.id} className="cartao">

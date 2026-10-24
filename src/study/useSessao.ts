@@ -5,24 +5,30 @@ import { type Escopo, cardsDoEscopo, montarSessao } from './session.ts'
 
 export async function carregarSessao(escopo: Escopo, agora: Date) {
   const estados = await lerEstados()
+  const cards = cardsDoEscopo(temas, escopo)
   const sessao = montarSessao({
-    cards: cardsDoEscopo(temas, escopo),
+    cards,
     estados,
     novosHoje: await novosHoje(agora),
     limite: await lerLimiteNovos(),
     agora,
   })
-  return { ...sessao, estados }
+  return { ...sessao, estados, cards }
 }
 
 // Reativa ao banco; `undefined` enquanto carrega.
 export function useContagem(escopo: Escopo) {
   const { temaSlug, baralhoId } = escopo
   return useLiveQuery(async () => {
-    const { vencidos, novos } = await carregarSessao(
+    const { vencidos, novos, estados, cards } = await carregarSessao(
       { temaSlug, baralhoId },
       new Date(),
     )
-    return { vencidos: vencidos.length, novos: novos.length }
+    return {
+      vencidos: vencidos.length,
+      novos: novos.length,
+      tudoSuspenso:
+        cards.length > 0 && cards.every((c) => estados.get(c.id)?.suspenso),
+    }
   }, [temaSlug, baralhoId])
 }
