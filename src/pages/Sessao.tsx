@@ -17,6 +17,13 @@ const ROTULOS: Record<Grade, string> = {
   [Rating.Easy]: 'Fácil',
 }
 
+const EMOJIS: Record<Grade, string> = {
+  [Rating.Again]: '😵',
+  [Rating.Hard]: '😬',
+  [Rating.Good]: '🙂',
+  [Rating.Easy]: '😎',
+}
+
 const CLASSES: Record<Grade, string> = {
   [Rating.Again]: 'errei',
   [Rating.Hard]: 'dificil',
@@ -214,25 +221,37 @@ function SessaoAtiva({
       {fila === undefined ? (
         <p>Carregando…</p>
       ) : atual === undefined && vaziaAoAbrir ? (
-        <EstadoVazio titulo="Nada para estudar agora" ref={tituloFim}>
+        <EstadoVazio
+          titulo="Nada para estudar agora"
+          emoji="☕"
+          ref={tituloFim}
+        >
           <p>
             <Link to={voltar.para}>Voltar para {voltar.rotulo}</Link>
           </p>
         </EstadoVazio>
       ) : atual === undefined ? (
         <section className="fim-sessao">
+          <span className="emoji-grande" aria-hidden="true">
+            🎉
+          </span>
           <h2 ref={tituloFim} tabIndex={-1}>
             Sessão concluída
           </h2>
           <p>
             {revisados} {revisados === 1 ? 'Card revisado' : 'Cards revisados'}.
           </p>
-          <Link to={voltar.para}>Voltar para {voltar.rotulo}</Link>
+          <Link className="botao" to={voltar.para}>
+            Voltar para {voltar.rotulo}
+          </Link>
         </section>
       ) : (
         <>
           <p className="contagem">Restam {fila.length}</p>
-          <CardView card={atual} revelado={revelado} />
+          {/* A `key` faz cada Card chegar como uma ficha nova, sem desvirar. */}
+          <div className="pilha" data-restam={Math.min(fila.length, 3)}>
+            <CardView key={atual.id} card={atual} revelado={revelado} />
+          </div>
           {reveladoEm !== undefined ? (
             <BotoesAvaliacao
               ref={grupoAvaliacoes}
@@ -290,6 +309,9 @@ function BotoesAvaliacao({
           className={`avaliacao ${CLASSES[rating]}`}
           onClick={() => aoAvaliar(rating)}
         >
+          <span className="avaliacao-emoji" aria-hidden="true">
+            {EMOJIS[rating]}
+          </span>
           <span>
             {ROTULOS[rating]} <kbd>{i + 1}</kbd>
           </span>

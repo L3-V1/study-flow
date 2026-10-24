@@ -124,6 +124,7 @@ function Resumo({
   return (
     <section>
       <p className="sequencia">
+        <span aria-hidden="true">{dias > 0 ? '🔥' : '🌱'}</span>
         Sequência: {dias} {dias === 1 ? 'dia seguido' : 'dias seguidos'}
       </p>
       <Heatmap porDia={porDia} agora={agora} />

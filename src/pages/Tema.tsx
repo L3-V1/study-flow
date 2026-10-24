@@ -16,7 +16,7 @@ export function Tema() {
       <BotaoEstudar escopo={{ temaSlug: tema.slug }} />
       <ul className="lista">
         {tema.baralhos.map((baralho) => (
-          <li key={baralho.id} className="cartao">
+          <li key={baralho.id} className="cartao maco">
             <Link to={`/tema/${tema.slug}/${baralho.id}`}>{baralho.nome}</Link>
             {baralho.descricao !== undefined && <p>{baralho.descricao}</p>}
             <span className="contagem">

@@ -33,7 +33,10 @@ describe('CardView', () => {
   it('lacuna revelada mostra o trecho, só uma vez', () => {
     render(<CardView card={lacuna1!} revelado />)
     expect(screen.getByText('TCP')).toBeInTheDocument()
-    expect(screen.queryByText('[...]')).toBeNull()
+    // A frente segue montada para a animação, mas fora da árvore acessível.
+    expect(
+      screen.getByText('[...]').closest('[aria-hidden="true"]'),
+    ).not.toBeNull()
   })
 
   it('pergunta e resposta esconde o verso e o extra até revelar', () => {

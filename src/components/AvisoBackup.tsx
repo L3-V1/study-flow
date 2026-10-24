@@ -20,6 +20,7 @@ export function AvisoBackup() {
   return (
     <aside className="aviso-backup" role="status">
       <p>
+        <span aria-hidden="true">💾 </span>
         {atraso.dias === undefined
           ? 'Você ainda não fez um backup do seu progresso.'
           : `Seu último backup foi há ${atraso.dias} dias.`}

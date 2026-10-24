@@ -1,43 +1,82 @@
 @import 'highlight.js/styles/github.css' (prefers-color-scheme: light);
 @import 'highlight.js/styles/github-dark.css' (prefers-color-scheme: dark);
 
+/*
+ * Tema "ficha pautada": a mesa é o fundo, as fichas são papel com pauta azul
+ * e a linha de margem vermelha. A caneta azul é a cor de ação.
+ */
 :root {
-  --fundo: #ffffff;
-  --texto: #1f2328;
-  --texto-suave: #59636e;
-  --borda: #d1d9e0;
-  --cartao: #f6f8fa;
-  --link: #0969da;
-  --destaque: #fff8c5;
-  --errei: #cf222e;
-  --dificil: #9a6700;
-  --bom: #1a7f37;
-  --facil: #0969da;
-  --nivel-0: #ebedf0;
-  --nivel-1: #9be9a8;
-  --nivel-2: #40c463;
-  --nivel-3: #30a14e;
-  --nivel-4: #216e39;
+  --mesa: #eef1f6;
+  --papel: #ffffff;
+  --texto: #1c2539;
+  --texto-suave: #566179;
+  --borda: #d6dce7;
+  --pauta: #d3deef;
+  --margem: #e8707a;
+  --caneta: #2f45c6;
+  --caneta-forte: #23369f;
+  --sobre-caneta: #ffffff;
+  --marca-texto: #fff1a8;
+  --errei: #c2333d;
+  --dificil: #9a5800;
+  --bom: #1f7a4d;
+  --facil: #2f45c6;
+  --nivel-0: #e3e8f2;
+  --nivel-1: #bcc8f0;
+  --nivel-2: #8597e6;
+  --nivel-3: #4f63d6;
+  --nivel-4: #2f45c6;
+  --sombra-papel:
+    0 1px 2px rgb(28 37 57 / 0.06), 0 12px 28px -14px rgb(28 37 57 / 0.28);
+
+  --fonte-titulo: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --fonte-texto:
+    'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --fonte-codigo: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  /* Altura da pauta: o texto das fichas assenta nessas linhas. */
+  --linha: 1.75rem;
+
+  /* Raios por hierarquia: papel quase reto, controles mais macios. */
+  --raio-ficha: 0.375rem;
+  --raio-controle: 0.625rem;
+  --raio-painel: 0.875rem;
+
+  /* Padding interno por tipo de contêiner (igual em todas as telas). */
+  --pad-ficha: 1.5rem 1.75rem 1.75rem;
+  --pad-cartao: 1rem 1.25rem;
+  --pad-painel: 1.25rem 1.5rem;
+  --pad-aviso: 0.75rem 1rem;
+  --pad-modal: 1.5rem;
+  --pad-celula: 0.625rem 0.875rem;
+  --pad-codigo: 0.875rem 1rem;
+  --pad-vazio: 2rem 1.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --fundo: #0d1117;
-    --texto: #e6edf3;
-    --texto-suave: #9198a1;
-    --borda: #3d444d;
-    --cartao: #151b23;
-    --link: #4493f8;
-    --destaque: #2e2a12;
-    --errei: #ff7b72;
-    --dificil: #d29922;
-    --bom: #3fb950;
-    --facil: #4493f8;
-    --nivel-0: #151b23;
-    --nivel-1: #0e4429;
-    --nivel-2: #006d32;
-    --nivel-3: #26a641;
-    --nivel-4: #39d353;
+    --mesa: #151a24;
+    --papel: #1f2633;
+    --texto: #e6eaf2;
+    --texto-suave: #a3adbf;
+    --borda: #343e52;
+    --pauta: #2b3548;
+    --margem: #d8646e;
+    --caneta: #9aabff;
+    --caneta-forte: #b7c3ff;
+    --sobre-caneta: #151a24;
+    --marca-texto: #3d3714;
+    --errei: #ff8a8f;
+    --dificil: #f0b44c;
+    --bom: #5cd39a;
+    --facil: #9aabff;
+    --nivel-0: #232b3a;
+    --nivel-1: #2b3870;
+    --nivel-2: #3d51a8;
+    --nivel-3: #6378e0;
+    --nivel-4: #9aabff;
+    --sombra-papel:
+      0 1px 2px rgb(0 0 0 / 0.3), 0 14px 30px -14px rgb(0 0 0 / 0.6);
   }
 }
 
@@ -49,11 +88,13 @@
 
 body {
   margin: 0;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
+  font-family: var(--fonte-texto);
+  font-size: 1.0625rem;
+  line-height: 1.55;
   color-scheme: light dark;
-  background: var(--fundo);
+  background: var(--mesa);
   color: var(--texto);
+  -webkit-font-smoothing: antialiased;
 }
 
 img,
@@ -65,15 +106,50 @@ svg {
 main {
   max-width: 42rem;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fonte-titulo);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+h1 {
+  margin: 0.5rem 0 1rem;
+  font-size: 2.25rem;
+  font-weight: 750;
+}
+
+h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.375rem;
+  font-weight: 650;
 }
 
 a {
-  color: var(--link);
+  color: var(--caneta);
+  text-underline-offset: 0.18em;
+}
+
+code {
+  font-family: var(--fonte-codigo);
+  font-size: 0.9em;
+  /* Sem ligaduras: `<=` não pode virar `≤` num Card de código. */
+  font-variant-ligatures: none;
+}
+
+:not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--mesa);
 }
 
 :focus-visible {
-  outline: 2px solid var(--link);
+  outline: 2px solid var(--caneta);
   outline-offset: 2px;
 }
 
@@ -92,19 +168,103 @@ h2 a {
   line-height: 2.25rem;
 }
 
+.trilha {
+  color: var(--texto-suave);
+  font-size: 0.9375rem;
+}
+
+h2 a {
+  color: var(--texto);
+  text-decoration: none;
+}
+
+h2 a:hover {
+  color: var(--caneta);
+  text-decoration: underline;
+}
+
+/* Início */
+.abertura {
+  margin: 1rem 0 1.5rem;
+}
+
+.abertura .logo {
+  display: inline-grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--raio-ficha);
+  background: var(--papel);
+  box-shadow:
+    var(--sombra-papel),
+    inset 0 -0.875rem 0 -0.8125rem var(--margem);
+  font-size: 1.75rem;
+  transform: rotate(-4deg);
+}
+
+.abertura h1 {
+  margin: 1rem 0 0.25rem;
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.abertura p {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 1.125rem;
+}
+
+.tema {
+  margin-top: 2.5rem;
+}
+
+.tema h2 {
+  margin: 0;
+}
+
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--borda);
+}
+
+.rodape a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--texto);
+  text-decoration: none;
+  box-shadow: 0 0 0 1px var(--borda);
+}
+
+.rodape a:hover {
+  box-shadow: 0 0 0 1px var(--caneta);
+  color: var(--caneta);
+}
+
+/* Listas de Baralhos e de Notas */
 .lista {
   list-style: none;
-  margin: 0;
+  margin: 0.75rem 0 0;
   padding: 0;
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .cartao {
+  overflow-wrap: anywhere;
   border: 1px solid var(--borda);
-  border-radius: 0.5rem;
-  background: var(--cartao);
-  padding: 1rem;
+  border-radius: var(--raio-ficha);
+  background: var(--papel);
+  padding: var(--pad-cartao);
   min-width: 0;
 }
 
@@ -112,10 +272,23 @@ h2 a {
   margin: 0;
 }
 
-.cartao hr {
-  border: none;
-  border-top: 1px solid var(--borda);
-  margin: 1rem 0;
+/* Um Baralho é um maço: aparece a ficha de trás. */
+.maco {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  box-shadow:
+    5px 5px 0 -1px var(--papel),
+    5px 5px 0 0 var(--borda);
+}
+
+.maco > a {
+  font-family: var(--fonte-titulo);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.maco > p {
+  color: var(--texto-suave);
 }
 
 .contagem {
@@ -124,17 +297,25 @@ h2 a {
   font-size: 0.875rem;
 }
 
-.trilha {
-  color: var(--texto-suave);
+.ficha-leitura {
+  box-shadow: var(--sombra-papel);
+  border-color: transparent;
+}
+
+.cartao hr {
+  border: none;
+  border-top: 2px solid var(--margem);
+  margin: 1rem 0;
+  opacity: 0.6;
 }
 
 .extra {
   margin-top: 1rem;
-  padding: 0.5rem 0.75rem;
-  border-left: 3px solid var(--borda);
-  background: var(--destaque);
-  color: var(--texto-suave);
+  padding: var(--pad-aviso);
+  border-radius: 0.25rem;
+  background: var(--marca-texto);
   font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
 .markdown > :first-child {
@@ -153,8 +334,12 @@ pre,
 }
 
 pre {
-  border-radius: 0.375rem;
+  border-radius: var(--raio-controle);
   font-size: 0.875rem;
+}
+
+pre code.hljs {
+  padding: var(--pad-codigo);
 }
 
 table {
@@ -166,91 +351,275 @@ table {
 th,
 td {
   border: 1px solid var(--borda);
-  padding: 0.5rem 0.75rem;
+  padding: var(--pad-celula);
 }
 
 /* Estados vazios */
-.vazio {
-  padding: 1rem;
+.vazio,
+.fim-sessao {
+  padding: var(--pad-vazio);
   text-align: center;
 }
 
-.vazio svg {
-  margin: 0 auto;
+.emoji-grande {
+  display: block;
+  font-size: 2.75rem;
+  line-height: 1;
+}
+
+.vazio h2,
+.fim-sessao h2 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.vazio p,
+.fim-sessao p {
+  margin: 0 0 1rem;
   color: var(--texto-suave);
 }
 
-.vazio h2 {
-  margin: 0.5rem 0;
-  font-size: 1.125rem;
+.vazio p:last-child {
+  margin-bottom: 0;
 }
 
-.vazio p {
-  margin: 0;
-  color: var(--texto-suave);
-}
-
-/* Estudo */
+/* Botões */
+.botao,
 .botao-estudar,
-.sessao button {
+.sessao button,
+.suspensa button,
+.aviso-backup button,
+.configuracoes button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   min-height: 2.75rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.125rem;
   border: 1px solid var(--borda);
-  border-radius: 0.5rem;
-  background: var(--fundo);
+  border-radius: var(--raio-controle);
+  background: var(--papel);
   color: var(--texto);
   font: inherit;
+  font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
+  max-width: 100%;
   cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+/* Link de texto livre (nome de Baralho): corta com reticências. */
+.botao {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.75rem;
+}
+
+.botao:hover,
+.sessao button:hover,
+.suspensa button:hover,
+.aviso-backup button:hover,
+.configuracoes button:hover:not(:disabled) {
+  border-color: var(--caneta);
+  color: var(--caneta);
 }
 
 .botao-estudar {
-  margin: 0.5rem 0;
-  color: var(--link);
-  border-color: var(--link);
-  font-weight: 600;
+  margin: 0.75rem 0;
+  border-color: var(--caneta);
+  background: var(--caneta);
+  color: var(--sobre-caneta);
   white-space: nowrap;
 }
 
+a.botao-estudar:hover {
+  border-color: var(--caneta-forte);
+  background: var(--caneta-forte);
+}
+
+/* No Tema, o botão fica contornado para não competir com o do topo. */
+.tema a.botao-estudar {
+  background: var(--papel);
+  color: var(--caneta);
+}
+
+.tema a.botao-estudar:hover {
+  background: var(--papel);
+  border-color: var(--caneta-forte);
+  color: var(--caneta-forte);
+}
+
 .botao-estudar[aria-disabled='true'] {
-  color: var(--texto-suave);
   border-color: var(--borda);
+  background: transparent;
+  color: var(--texto-suave);
   font-weight: normal;
   cursor: default;
 }
 
-.sessao .cartao {
-  margin: 1rem 0;
+kbd {
+  font-family: var(--fonte-codigo);
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 0 0.35rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  opacity: 0.75;
+}
+
+/* Sessão */
+.sessao .contagem {
+  margin-top: -0.25rem;
+}
+
+/* As fichas de trás só aparecem se ainda há Cards na fila. */
+.pilha {
+  position: relative;
+  isolation: isolate;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.pilha::before,
+.pilha::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--raio-ficha);
+  background: var(--papel);
+  box-shadow: var(--sombra-papel);
+}
+
+.pilha::before {
+  transform: translate(5px, 7px) rotate(1.4deg);
+}
+
+.pilha::after {
+  transform: translate(-4px, 11px) rotate(-1.1deg);
+}
+
+.pilha[data-restam='1']::before,
+.pilha[data-restam='1']::after,
+.pilha[data-restam='2']::after {
+  display: none;
+}
+
+.ficha {
+  perspective: 1600px;
+  animation: chegar 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ficha-interior {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.ficha-interior.virada {
+  transform: rotateY(180deg);
+}
+
+.ficha-face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 15rem;
+  padding: var(--pad-ficha);
+  border-radius: var(--raio-ficha);
+  background: var(--papel);
+  box-shadow: var(--sombra-papel);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.ficha-verso {
+  transform: rotateY(180deg);
+}
+
+/* A linha vermelha separa o cabeçalho da ficha da área pautada. */
+.ficha-cabecalho {
+  margin: 0 0 var(--linha);
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid var(--margem);
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.ficha-corpo {
+  flex: 1;
+  overflow-wrap: anywhere;
+  font-size: 1.1875rem;
+  line-height: var(--linha);
+  background-image: linear-gradient(
+    transparent calc(var(--linha) - 1px),
+    var(--pauta) calc(var(--linha) - 1px)
+  );
+  background-size: 100% var(--linha);
+}
+
+.ficha-corpo .markdown p,
+.ficha-corpo .markdown ul,
+.ficha-corpo .markdown ol {
+  margin: 0 0 var(--linha);
+}
+
+.ficha-corpo .extra {
+  margin-top: var(--linha);
+}
+
+@keyframes chegar {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem) rotate(1.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha {
+    animation: none;
+  }
+
+  .ficha-interior,
+  .botao,
+  .botao-estudar,
+  .sessao button {
+    transition: none;
+  }
 }
 
 .sessao .botao-principal {
   width: 100%;
-  font-weight: 600;
+  border-color: var(--caneta);
+  background: var(--caneta);
+  color: var(--sobre-caneta);
+}
+
+.sessao .botao-principal:hover {
+  border-color: var(--caneta-forte);
+  background: var(--caneta-forte);
+  color: var(--sobre-caneta);
 }
 
 .sessao .botao-erro {
   margin-top: 1.5rem;
+  border-color: transparent;
+  background: transparent;
   color: var(--texto-suave);
   font-size: 0.875rem;
-}
-
-kbd {
-  font-family: ui-monospace, monospace;
-  font-size: 0.75rem;
-  padding: 0 0.3rem;
-  border: 1px solid var(--borda);
-  border-radius: 0.25rem;
-  color: var(--texto-suave);
+  font-weight: normal;
 }
 
 .avaliacoes {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
+  gap: 0.625rem;
 }
 
 @media (max-width: 24rem) {
@@ -261,12 +630,21 @@ kbd {
 
 .sessao .avaliacao {
   flex-direction: column;
-  gap: 0;
-  padding: 0.5rem;
-  border-width: 2px;
-  border-color: var(--cor);
+  gap: 0.125rem;
+  padding: 0.625rem 0.5rem;
+  border: 1.5px solid var(--cor);
   color: var(--cor);
-  font-weight: 600;
+}
+
+.sessao .avaliacao:hover {
+  border-color: var(--cor);
+  background: color-mix(in srgb, var(--cor) 10%, var(--papel));
+  color: var(--cor);
+}
+
+.avaliacao-emoji {
+  font-size: 1.5rem;
+  line-height: 1.2;
 }
 
 .avaliacao small {
@@ -277,20 +655,32 @@ kbd {
 .avaliacao.errei {
   --cor: var(--errei);
 }
+
 .avaliacao.dificil {
   --cor: var(--dificil);
 }
+
 .avaliacao.bom {
   --cor: var(--bom);
 }
+
 .avaliacao.facil {
   --cor: var(--facil);
 }
 
 .aviso {
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  background: var(--destaque);
+  padding: var(--pad-aviso);
+  border-radius: var(--raio-controle);
+  background: var(--marca-texto);
+}
+
+.aviso[role='alert'] {
+  background: color-mix(in srgb, var(--errei) 14%, var(--papel));
+}
+
+/* Notas suspensas no modo leitura */
+.ficha-leitura > .aviso {
+  margin: 0 0 0.75rem;
 }
 
 .suspensa {
@@ -301,24 +691,19 @@ kbd {
 }
 
 .marca {
-  padding: 0.125rem 0.5rem;
+  padding: 0.125rem 0.625rem;
   border-radius: 999px;
   background: var(--errei);
-  color: var(--fundo);
-  font-size: 0.75rem;
+  color: var(--papel);
+  font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .suspensa button {
   min-height: 2.75rem;
-  padding: 0.25rem 0.75rem;
-  border: 1px solid var(--borda);
-  border-radius: 0.375rem;
-  background: var(--fundo);
-  color: var(--link);
-  font: inherit;
-  cursor: pointer;
+  padding: 0.25rem 0.875rem;
+  color: var(--caneta);
 }
 
 /* Backup e Configurações */
@@ -329,48 +714,62 @@ kbd {
   justify-content: space-between;
   gap: 0.5rem 1rem;
   margin-bottom: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.375rem;
-  background: var(--destaque);
+  padding: var(--pad-aviso);
+  border-radius: var(--raio-controle);
+  background: var(--marca-texto);
 }
 
 .aviso-backup p {
   margin: 0;
 }
 
-.aviso-backup button,
-.configuracoes button,
-.configuracoes input {
-  min-height: 2.75rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--borda);
-  border-radius: 0.5rem;
-  background: var(--fundo);
-  color: var(--texto);
-  font: inherit;
-}
-
-.aviso-backup button,
-.configuracoes button {
-  color: var(--link);
-  border-color: var(--link);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.configuracoes button:disabled {
-  color: var(--texto-suave);
-  border-color: var(--borda);
-  cursor: default;
-}
-
 .configuracoes section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
+  padding: var(--pad-painel);
+  border-radius: var(--raio-painel);
+  background: var(--papel);
+  box-shadow: 0 0 0 1px var(--borda);
+}
+
+.configuracoes section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1875rem;
+}
+
+.configuracoes section > p {
+  margin: 0 0 1rem;
+  color: var(--texto-suave);
+}
+
+.configuracoes section > .aviso {
+  margin: 1rem 0 0;
 }
 
 .configuracoes label {
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.375rem;
+  font-weight: 600;
+}
+
+.configuracoes input {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-controle);
+  background: var(--mesa);
+  color: var(--texto);
+  font: inherit;
+}
+
+.configuracoes button {
+  border-color: var(--caneta);
+  color: var(--caneta);
+}
+
+.configuracoes button:disabled {
+  border-color: var(--borda);
+  color: var(--texto-suave);
+  cursor: default;
 }
 
 .formulario .linha {
@@ -379,7 +778,8 @@ kbd {
 }
 
 .formulario input {
-  width: 7rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .configuracoes input:user-invalid {
@@ -388,27 +788,33 @@ kbd {
 
 .configuracoes input[type='file'] {
   width: 100%;
-  max-width: 24rem;
   padding: 0.5rem;
 }
 
-.rodape a {
-  display: inline-block;
-  min-height: 2.75rem;
-  line-height: 2.75rem;
+.configuracoes input[type='file']::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--caneta);
+  border-radius: calc(var(--raio-controle) - 0.125rem);
+  background: var(--papel);
+  color: var(--caneta);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 dialog {
   max-width: min(28rem, calc(100% - 2rem));
-  padding: 1.5rem;
-  border: 1px solid var(--borda);
-  border-radius: 0.5rem;
-  background: var(--fundo);
+  padding: var(--pad-modal);
+  border: none;
+  border-radius: var(--raio-painel);
+  background: var(--papel);
   color: var(--texto);
+  box-shadow: var(--sombra-papel);
 }
 
 dialog::backdrop {
-  background: rgb(0 0 0 / 0.5);
+  background: rgb(21 26 36 / 0.55);
 }
 
 dialog h2 {
@@ -420,21 +826,43 @@ dialog .acoes {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.5rem;
+  margin-top: 1.5rem;
 }
 
-.configuracoes button.perigo {
-  color: var(--errei);
+.configuracoes button.perigo,
+.configuracoes button.perigo:hover {
   border-color: var(--errei);
+  background: var(--errei);
+  color: var(--papel);
 }
 
 /* Progresso */
 .sequencia {
-  font-size: 1.125rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.heatmap {
+  padding: var(--pad-painel);
+  border-radius: var(--raio-painel);
+  background: var(--papel);
+  box-shadow: 0 0 0 1px var(--borda);
+}
+
+.heatmap > p:first-child {
+  margin: 0 0 0.75rem;
+  color: var(--texto-suave);
 }
 
 .tabela-rolagem {
   overflow-x: auto;
+  border-radius: var(--raio-painel);
+  background: var(--papel);
+  box-shadow: 0 0 0 1px var(--borda);
 }
 
 .tabela-rolagem table {
@@ -442,9 +870,18 @@ dialog .acoes {
   width: 100%;
 }
 
+/* Linhas como pauta: só as horizontais. */
+.tabela-rolagem th,
+.tabela-rolagem td {
+  border: none;
+  border-bottom: 1px solid var(--pauta);
+}
+
 .tabela-rolagem th[scope='col'] {
   font-size: 0.875rem;
+  color: var(--texto-suave);
   vertical-align: bottom;
+  border-bottom: 2px solid var(--margem);
 }
 
 .tabela-rolagem th[scope='row'] {
@@ -458,8 +895,13 @@ dialog .acoes {
   font-variant-numeric: tabular-nums;
 }
 
+.tabela-rolagem th[scope='col']:first-child {
+  text-align: left;
+}
+
 .tabela-rolagem tfoot th[scope='row'],
 .tabela-rolagem tfoot td {
+  border-bottom: none;
   font-weight: 700;
 }
 
@@ -488,6 +930,7 @@ dialog .acoes {
   align-items: center;
   justify-content: flex-end;
   gap: 2px;
+  margin: 0.5rem 0 0;
   color: var(--texto-suave);
   font-size: 0.75rem;
 }
@@ -508,15 +951,19 @@ dialog .acoes {
 .nivel-0 {
   background: var(--nivel-0);
 }
+
 .nivel-1 {
   background: var(--nivel-1);
 }
+
 .nivel-2 {
   background: var(--nivel-2);
 }
+
 .nivel-3 {
   background: var(--nivel-3);
 }
+
 .nivel-4 {
   background: var(--nivel-4);
 }

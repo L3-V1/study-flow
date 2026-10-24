@@ -26,6 +26,7 @@ export function BotaoEstudar({ escopo }: { escopo: Escopo }) {
   const texto = `Estudar · ${vencidos} ${vencidos === 1 ? 'vencido' : 'vencidos'} · ${novos} ${novos === 1 ? 'novo' : 'novos'}`
   return (
     <Link className="botao-estudar" to={rotaDoEscopo(escopo)}>
+      <span aria-hidden="true">📚</span>
       {texto}
     </Link>
   )

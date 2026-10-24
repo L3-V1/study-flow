@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
 import { EstadoVazio } from '../components/EstadoVazio.tsx'
@@ -12,6 +13,8 @@ import { lerEstados, reativarNota } from '../progress/db.ts'
 export function Baralho() {
   const { temaSlug, baralhoId } = useParams()
   const estados = useLiveQuery(lerEstados)
+  // O retorno aparece na própria Nota, que pode estar longe do topo.
+  const [aviso, setAviso] = useState<{ notaId: string; texto: string }>()
   const tema = temas.find((t) => t.slug === temaSlug)
   const baralho = tema?.baralhos.find((b) => b.id === baralhoId)
   if (tema === undefined || baralho === undefined) {
@@ -27,6 +30,15 @@ export function Baralho() {
     cardIds.every((id) => estados?.get(id)?.suspenso),
   )
 
+  async function reativar(notaId: string, cardIds: string[]) {
+    try {
+      await reativarNota(cardIds)
+      setAviso({ notaId, texto: 'Nota reativada.' })
+    } catch {
+      setAviso({ notaId, texto: 'Não foi possível reativar a Nota.' })
+    }
+  }
+
   return (
     <main>
       <nav className="trilha">
@@ -37,20 +49,31 @@ export function Baralho() {
       {baralho.descricao !== undefined && <p>{baralho.descricao}</p>}
       <BotaoEstudar escopo={{ temaSlug: tema.slug, baralhoId: baralho.id }} />
       {tudoSuspenso && (
-        <EstadoVazio titulo="Todas as Notas deste Baralho estão suspensas">
+        <EstadoVazio
+          titulo="Todas as Notas deste Baralho estão suspensas"
+          emoji="⏸️"
+        >
           <p>Reative as Notas abaixo depois de corrigi-las.</p>
         </EstadoVazio>
       )}
       <ul className="lista">
         {notas.map(({ nota, cardIds, suspensa }) => (
-          <li key={nota.id} className="cartao">
+          <li key={nota.id} className="cartao ficha-leitura">
             {suspensa && (
               <div className="suspensa">
                 <span className="marca">Suspensa</span>
-                <button type="button" onClick={() => reativarNota(cardIds)}>
+                <button
+                  type="button"
+                  onClick={() => void reativar(nota.id, cardIds)}
+                >
                   Reativar
                 </button>
               </div>
+            )}
+            {aviso?.notaId === nota.id && (
+              <p className="aviso" role="status">
+                {aviso.texto}
+              </p>
             )}
             {nota.tipo === 'pergunta-resposta' ? (
               <>
