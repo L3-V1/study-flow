@@ -1,7 +1,7 @@
 ---
 titulo: Fase 5 - Backup
 data: 2026-10-23
-status: aprovado
+status: implementado
 tipo: phase
 numero: "05"
 pai: roadmaps/roadmap-01

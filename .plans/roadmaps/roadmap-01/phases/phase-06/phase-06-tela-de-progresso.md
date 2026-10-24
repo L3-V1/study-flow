@@ -1,7 +1,7 @@
 ---
 titulo: Fase 6 - Tela de progresso
 data: 2026-10-23
-status: aprovado
+status: implementado
 tipo: phase
 numero: "06"
 pai: roadmaps/roadmap-01

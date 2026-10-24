@@ -1,7 +1,7 @@
 ---
 titulo: Roteiro de desenvolvimento do Study Flow
 data: 2026-10-21
-status: aprovado
+status: implementado
 tipo: roadmap
 numero: "01"
 triagem: ok
