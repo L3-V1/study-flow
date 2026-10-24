@@ -19,6 +19,8 @@ features, fixes, refactors, spikes, docs, chores
 
 ## Índice
 
+- **features/**
+  - [Apagar dados locais, limpar progresso órfão e /flashcards-remove](features/2026-10-24-apagar-dados-orfaos-flashcards-remove.md)
 - **roadmaps/**
   - **roadmap-01/**
     - [Roteiro de desenvolvimento do Study Flow](roadmaps/roadmap-01/roadmap-01-desenvolvimento-study-flow.md)

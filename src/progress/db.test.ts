@@ -1,9 +1,12 @@
 import { Rating, State } from 'ts-fsrs'
 import { describe, expect, it } from 'vitest'
 import {
+  apagarDados,
   avaliar,
   db,
+  gravarLimiteNovos,
   lerLimiteNovos,
+  limparOrfaos,
   novosHoje,
   reativarNota,
   suspenderNota,
@@ -63,5 +66,69 @@ describe('progresso', () => {
     expect(await lerLimiteNovos()).toBe(20)
     await db.settings.put({ chave: 'limiteNovosPorDia', valor: 5 })
     expect(await lerLimiteNovos()).toBe(5)
+  })
+})
+
+describe('apagarDados', () => {
+  async function popular() {
+    await avaliar('n1', Rating.Good, agora)
+    await gravarLimiteNovos(5)
+    await db.settings.put({ chave: 'ultimoBackup', valor: agora.getTime() })
+  }
+
+  it('só progresso apaga estados e logs e mantém os ajustes', async () => {
+    await popular()
+    await apagarDados({ progresso: true, ajustes: false })
+    expect(await db.cardStates.count()).toBe(0)
+    expect(await db.reviewLogs.count()).toBe(0)
+    expect(await lerLimiteNovos()).toBe(5)
+  })
+
+  it('só ajustes volta o limite a 20 e mantém o progresso', async () => {
+    await popular()
+    await apagarDados({ progresso: false, ajustes: true })
+    expect(await lerLimiteNovos()).toBe(20)
+    expect(await db.cardStates.count()).toBe(1)
+    expect(await db.reviewLogs.count()).toBe(1)
+  })
+
+  it('ambos apagam tudo, menos o ultimoBackup', async () => {
+    await popular()
+    await apagarDados({ progresso: true, ajustes: true })
+    expect(await db.cardStates.count()).toBe(0)
+    expect(await db.reviewLogs.count()).toBe(0)
+    expect(await lerLimiteNovos()).toBe(20)
+    expect(await db.settings.get('ultimoBackup')).toEqual({
+      chave: 'ultimoBackup',
+      valor: agora.getTime(),
+    })
+  })
+})
+
+describe('limparOrfaos', () => {
+  it('apaga estados e logs dos órfãos e conta Cards distintos', async () => {
+    await avaliar('fica', Rating.Good, agora)
+    await avaliar('sai', Rating.Good, agora)
+    await avaliar('sai', Rating.Good, new Date(agora.getTime() + 6e4))
+    await avaliar('lac::c1', Rating.Good, agora)
+    await avaliar('lac::c2', Rating.Good, agora)
+    await suspenderNota(['suspensa'])
+    // Log sem estado também é órfão.
+    await db.cardStates.delete('lac::c2')
+
+    expect(await limparOrfaos(new Set(['fica', 'lac::c1']))).toBe(3)
+    expect((await db.cardStates.toArray()).map((e) => e.cardId).sort()).toEqual(
+      ['fica', 'lac::c1'],
+    )
+    expect(
+      [...new Set((await db.reviewLogs.toArray()).map((l) => l.cardId))].sort(),
+    ).toEqual(['fica', 'lac::c1'])
+  })
+
+  it('sem órfãos não apaga nada e retorna 0', async () => {
+    await avaliar('fica', Rating.Good, agora)
+    expect(await limparOrfaos(new Set(['fica']))).toBe(0)
+    expect(await db.cardStates.count()).toBe(1)
+    expect(await db.reviewLogs.count()).toBe(1)
   })
 })

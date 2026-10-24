@@ -100,3 +100,42 @@ export async function lerLimiteNovos(): Promise<number> {
 export async function gravarLimiteNovos(n: number): Promise<void> {
   await db.settings.put({ chave: 'limiteNovosPorDia', valor: n })
 }
+
+// O `ultimoBackup` nunca é apagado: o aviso de backup continua valendo.
+export function apagarDados({
+  progresso,
+  ajustes,
+}: {
+  progresso: boolean
+  ajustes: boolean
+}): Promise<void> {
+  return db.transaction(
+    'rw',
+    db.cardStates,
+    db.reviewLogs,
+    db.settings,
+    async () => {
+      if (progresso) {
+        await db.cardStates.clear()
+        await db.reviewLogs.clear()
+      }
+      if (ajustes) await db.settings.delete('limiteNovosPorDia')
+    },
+  )
+}
+
+// Apaga estados e logs de Cards que saíram do conteúdo (ADR 0003).
+// Retorna quantos Cards distintos foram limpos.
+export function limparOrfaos(cardIds: Set<string>): Promise<number> {
+  return db.transaction('rw', db.cardStates, db.reviewLogs, async () => {
+    const existentes = new Set([
+      ...(await db.cardStates.toCollection().primaryKeys()),
+      ...((await db.reviewLogs.orderBy('cardId').uniqueKeys()) as string[]),
+    ])
+    const orfaos = [...existentes].filter((id) => !cardIds.has(id))
+    if (orfaos.length === 0) return 0
+    await db.cardStates.bulkDelete(orfaos)
+    await db.reviewLogs.where('cardId').anyOf(orfaos).delete()
+    return orfaos.length
+  })
+}

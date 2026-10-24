@@ -104,4 +104,68 @@ describe('Configuracoes', () => {
     ).toBeInTheDocument()
     expect(screen.queryByRole('dialog')).toBeNull()
   })
+
+  describe('apagar dados', () => {
+    it('o botão fica desabilitado sem seleção', () => {
+      abrir()
+      expect(screen.getByRole('button', { name: 'Apagar…' })).toBeDisabled()
+      fireEvent.click(screen.getByLabelText('Progresso e histórico'))
+      expect(screen.getByRole('button', { name: 'Apagar…' })).toBeEnabled()
+    })
+
+    it('apagar o progresso esvazia as tabelas e avisa', async () => {
+      await avaliar('a', Rating.Good, agora)
+      abrir()
+      fireEvent.click(screen.getByLabelText('Progresso e histórico'))
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar…' }))
+      expect(await screen.findByRole('dialog')).toHaveTextContent(
+        'Isso apaga o progresso e o histórico de revisões.',
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar' }))
+      expect(await screen.findByText('Dados apagados.')).toBeInTheDocument()
+      expect(await db.cardStates.count()).toBe(0)
+      expect(await db.reviewLogs.count()).toBe(0)
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
+
+    it('apagar os ajustes volta o limite a 20', async () => {
+      await gravarLimiteNovos(7)
+      abrir()
+      const campo = await screen.findByLabelText('Cards novos por dia')
+      await waitFor(() => expect(campo).toHaveValue(7))
+      fireEvent.click(screen.getByLabelText('Ajustes (limite de Cards novos)'))
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar…' }))
+      await screen.findByRole('dialog')
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar' }))
+      expect(await screen.findByText('Dados apagados.')).toBeInTheDocument()
+      await waitFor(() =>
+        expect(screen.getByLabelText('Cards novos por dia')).toHaveValue(20),
+      )
+    })
+
+    it('Cancelar não apaga nada', async () => {
+      await avaliar('a', Rating.Good, agora)
+      abrir()
+      fireEvent.click(screen.getByLabelText('Progresso e histórico'))
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar…' }))
+      await screen.findByRole('dialog')
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }))
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+      expect(await db.cardStates.count()).toBe(1)
+      expect(screen.queryByText('Dados apagados.')).toBeNull()
+    })
+
+    it('exportar antes baixa o backup sem fechar o modal', async () => {
+      abrir()
+      fireEvent.click(screen.getByLabelText('Progresso e histórico'))
+      fireEvent.click(screen.getByRole('button', { name: 'Apagar…' }))
+      await screen.findByRole('dialog')
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Exportar backup antes' }),
+      )
+      expect(await screen.findByText('Backup exportado.')).toBeInTheDocument()
+      expect(clique).toHaveBeenCalledOnce()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+  })
 })

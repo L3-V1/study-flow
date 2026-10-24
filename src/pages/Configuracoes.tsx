@@ -12,7 +12,11 @@ import {
   importarBackup,
   lerBackup,
 } from '../progress/backup.ts'
-import { gravarLimiteNovos, lerLimiteNovos } from '../progress/db.ts'
+import {
+  apagarDados,
+  gravarLimiteNovos,
+  lerLimiteNovos,
+} from '../progress/db.ts'
 
 type Aviso = { texto: string; erro?: boolean }
 
@@ -26,8 +30,9 @@ function MensagemAviso({ aviso }: { aviso: Aviso | undefined }) {
 }
 
 export function Configuracoes() {
-  // Remonta o formulário do limite para reler o valor importado.
-  const [importacoes, setImportacoes] = useState(0)
+  // Remonta o formulário do limite para reler o valor importado ou apagado.
+  const [recargas, setRecargas] = useState(0)
+  const recarregar = () => setRecargas((n) => n + 1)
   return (
     <main className="configuracoes">
       <nav className="trilha">
@@ -35,9 +40,10 @@ export function Configuracoes() {
         <Link to="/configuracoes">Configurações</Link>
       </nav>
       <h1>Configurações</h1>
-      <LimiteNovos key={importacoes} />
+      <LimiteNovos key={recargas} />
       <Exportar />
-      <Importar aoImportar={() => setImportacoes((n) => n + 1)} />
+      <Importar aoImportar={recarregar} />
+      <ApagarDados aoApagar={recarregar} />
     </main>
   )
 }
@@ -216,6 +222,100 @@ function Importar({ aoImportar }: { aoImportar: () => void }) {
             </div>
           </>
         )}
+      </dialog>
+    </section>
+  )
+}
+
+function ApagarDados({ aoApagar }: { aoApagar: () => void }) {
+  const [progresso, setProgresso] = useState(false)
+  const [ajustes, setAjustes] = useState(false)
+  const [aviso, setAviso] = useState<Aviso>()
+  const [avisoBackup, setAvisoBackup] = useState<Aviso>()
+  const dialogo = useRef<HTMLDialogElement>(null)
+
+  function abrir() {
+    setAviso(undefined)
+    setAvisoBackup(undefined)
+    dialogo.current?.showModal()
+  }
+
+  async function exportar() {
+    try {
+      await baixarBackup(new Date())
+      setAvisoBackup({ texto: 'Backup exportado.' })
+    } catch {
+      setAvisoBackup({
+        texto: 'Não foi possível exportar o backup.',
+        erro: true,
+      })
+    }
+  }
+
+  async function apagar() {
+    try {
+      await apagarDados({ progresso, ajustes })
+      setAviso({ texto: 'Dados apagados.' })
+      setProgresso(false)
+      setAjustes(false)
+      aoApagar()
+    } catch {
+      setAviso({ texto: 'Não foi possível apagar os dados.', erro: true })
+    }
+    dialogo.current?.close()
+  }
+
+  const itens = [
+    progresso && 'o progresso e o histórico de revisões',
+    ajustes && 'o limite de Cards novos, que volta ao padrão',
+  ].filter(Boolean)
+
+  return (
+    <section>
+      <h2>Apagar dados</h2>
+      <p>Apaga do navegador o que estiver marcado.</p>
+      <div className="opcoes">
+        <label className="opcao">
+          <input
+            type="checkbox"
+            checked={progresso}
+            onChange={(e) => setProgresso(e.currentTarget.checked)}
+          />
+          Progresso e histórico
+        </label>
+        <label className="opcao">
+          <input
+            type="checkbox"
+            checked={ajustes}
+            onChange={(e) => setAjustes(e.currentTarget.checked)}
+          />
+          Ajustes (limite de Cards novos)
+        </label>
+      </div>
+      <button type="button" disabled={!progresso && !ajustes} onClick={abrir}>
+        Apagar…
+      </button>
+      <MensagemAviso aviso={aviso} />
+      <dialog ref={dialogo} aria-labelledby="titulo-apagar">
+        <h2 id="titulo-apagar">Apagar dados?</h2>
+        <p>Isso apaga {itens.join(' e ')}.</p>
+        <p>Não dá para desfazer sem um backup.</p>
+        <MensagemAviso aviso={avisoBackup} />
+        <div className="acoes">
+          <button type="button" onClick={() => void exportar()}>
+            Exportar backup antes
+          </button>
+          <button type="button" onClick={() => dialogo.current?.close()}>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className="perigo"
+            onClick={() => void apagar()}
+          >
+            Apagar
+          </button>
+        </div>
       </dialog>
     </section>
   )

@@ -803,6 +803,29 @@ kbd {
   cursor: pointer;
 }
 
+.opcoes {
+  margin-bottom: 1rem;
+}
+
+.configuracoes label.opcao {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.configuracoes .opcao input {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--caneta);
+}
+
 dialog {
   max-width: min(28rem, calc(100% - 2rem));
   padding: var(--pad-modal);

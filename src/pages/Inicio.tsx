@@ -1,12 +1,20 @@
 import { Link } from 'react-router'
 import { AvisoBackup } from '../components/AvisoBackup.tsx'
+import { AvisoOrfaos } from '../components/AvisoOrfaos.tsx'
 import { BotaoEstudar } from '../components/BotaoEstudar.tsx'
 import { EstadoVazio } from '../components/EstadoVazio.tsx'
 import { temas } from '../content/load.ts'
 
-export function Inicio() {
+export function Inicio({
+  cardsRemovidos = 0,
+  aoFecharAviso = () => {},
+}: {
+  cardsRemovidos?: number
+  aoFecharAviso?: () => void
+}) {
   return (
     <main>
+      <AvisoOrfaos quantidade={cardsRemovidos} aoFechar={aoFecharAviso} />
       <AvisoBackup />
       <header className="abertura">
         <span className="logo" aria-hidden="true">

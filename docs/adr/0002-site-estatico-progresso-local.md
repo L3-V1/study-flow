@@ -5,4 +5,4 @@ O app é publicado como site estático no GitHub Pages, em repositório público
 ## Consequências
 
 - Não há sincronização automática entre dispositivos. Limpar os dados do site apaga o progresso que não tiver backup. Para reduzir esse risco, o app avisa quando passam 7 dias sem uma exportação.
-- O progresso de Notas removidas continua no IndexedDB e é ignorado. Se a Nota voltar com o mesmo ID, o progresso volta junto.
+- O progresso de Notas removidas continua no IndexedDB e é ignorado. Se a Nota voltar com o mesmo ID, o progresso volta junto. Substituída pelo ADR 0003.
